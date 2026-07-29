@@ -1304,11 +1304,20 @@ button {
   }
 
   .section {
-    padding: 2.25rem 0 4rem;
+    padding: 1.9rem 0 3.6rem;
+  }
+
+  .hero {
+    padding-top: 1rem;
+    padding-bottom: 0.35rem;
+  }
+
+  .hero + .portrait-section {
+    padding-top: 0.35rem;
   }
 
   .hero__media {
-    min-height: 72vh;
+    min-height: clamp(25rem, 62vh, 34rem);
     border-radius: 1.75rem;
     background-position: center, center, 64% 24%;
   }
