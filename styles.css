@@ -386,7 +386,7 @@ button {
   height: 100%;
   min-height: 32rem;
   object-fit: cover;
-  object-position: center 24%;
+  object-position: center top;
 }
 
 .portrait-note__panel {
