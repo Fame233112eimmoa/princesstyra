@@ -12,8 +12,6 @@ const lightboxTitle = document.querySelector("#lightbox-title");
 const lightboxDate = document.querySelector("#lightbox-date");
 const lightboxContent = document.querySelector("#lightbox-content");
 
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 const galleryContent = window.siteContent?.gallery ?? {
   targetCount: 50,
   batchSize: 12,
@@ -97,6 +95,48 @@ function getEffectiveVideoPoster(item) {
   return getDerivedVideoPoster(item.src);
 }
 
+function resetLightboxMedia() {
+  lightboxContent?.querySelectorAll("video").forEach((video) => {
+    video.pause();
+    video.currentTime = 0;
+  });
+}
+
+function showLightboxDialog() {
+  if (!lightboxDialog) {
+    return;
+  }
+
+  document.body.classList.add("has-modal-open");
+
+  if (typeof lightboxDialog.showModal === "function") {
+    if (!lightboxDialog.open) {
+      lightboxDialog.showModal();
+    }
+    return;
+  }
+
+  lightboxDialog.setAttribute("open", "");
+  lightboxDialog.classList.add("is-open");
+}
+
+function closeLightboxDialog() {
+  if (!lightboxDialog) {
+    return;
+  }
+
+  document.body.classList.remove("has-modal-open");
+
+  if (typeof lightboxDialog.close === "function" && lightboxDialog.open) {
+    lightboxDialog.close();
+    return;
+  }
+
+  lightboxDialog.classList.remove("is-open");
+  lightboxDialog.removeAttribute("open");
+  resetLightboxMedia();
+}
+
 function createImagePreview(item, button) {
   const image = document.createElement("img");
   image.src = item.thumbnail ?? item.src;
@@ -167,7 +207,7 @@ function openLightbox(item) {
   figure.appendChild(figcaption);
 
   lightboxContent.appendChild(figure);
-  lightboxDialog.showModal();
+  showLightboxDialog();
 }
 
 function createMediaCard(item) {
@@ -294,27 +334,9 @@ if (navToggle) {
   });
 }
 
-if (!prefersReducedMotion && "IntersectionObserver" in window) {
-  const revealObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.16 }
-  );
-
-  document.querySelectorAll(".reveal").forEach((element) => {
-    revealObserver.observe(element);
-  });
-} else {
-  document.querySelectorAll(".reveal").forEach((element) => {
-    element.classList.add("is-visible");
-  });
-}
+document.querySelectorAll(".reveal").forEach((element) => {
+  element.classList.add("is-visible");
+});
 
 galleryFilters?.addEventListener("click", (event) => {
   const button = event.target.closest(".gallery-filter");
@@ -352,14 +374,12 @@ galleryGrid?.addEventListener("click", (event) => {
 });
 
 document.querySelector("[data-lightbox-close]")?.addEventListener("click", () => {
-  lightboxDialog.close();
+  closeLightboxDialog();
 });
 
 lightboxDialog?.addEventListener("close", () => {
-  lightboxContent.querySelectorAll("video").forEach((video) => {
-    video.pause();
-    video.currentTime = 0;
-  });
+  document.body.classList.remove("has-modal-open");
+  resetLightboxMedia();
 });
 
 [lightboxDialog].forEach((dialog) => {
@@ -372,7 +392,7 @@ lightboxDialog?.addEventListener("close", () => {
       event.clientX <= rect.left + rect.width;
 
     if (!isInside) {
-      dialog.close();
+      closeLightboxDialog();
     }
   });
 });

@@ -43,6 +43,10 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+body.has-modal-open {
+  overflow: hidden;
+}
+
 img,
 video {
   display: block;
@@ -1121,10 +1125,22 @@ button {
 }
 
 .modal {
+  position: fixed;
+  inset: 0;
+  margin: auto;
   width: min(44rem, calc(100vw - 2rem));
   border: 0;
   padding: 0;
   background: transparent;
+}
+
+.modal:not([open]):not(.is-open) {
+  display: none;
+}
+
+.modal[open],
+.modal.is-open {
+  display: block;
 }
 
 .modal--wide {
@@ -1207,12 +1223,7 @@ button {
   color: var(--accent-deep);
 }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(1.2rem);
-  transition: opacity 700ms ease, transform 700ms ease;
-}
-
+.reveal,
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
@@ -1224,6 +1235,11 @@ button {
 }
 
 @media (max-width: 960px) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
   .portrait-note,
   .portrait-essay__layout,
   .little-things-note__layout,
@@ -1232,8 +1248,19 @@ button {
     grid-template-columns: 1fr;
   }
 
+  .portrait-note {
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .portrait-note__figure {
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
+
   .portrait-note__figure img {
-    min-height: 26rem;
+    height: 100%;
+    min-height: 0;
   }
 
   .portrait-essay__body,
@@ -1323,7 +1350,7 @@ button {
   }
 
   .hero__media {
-    min-height: clamp(20rem, 48vh, 26rem);
+    min-height: 22rem;
     border-radius: 1.75rem;
     padding: 1.4rem;
   }
@@ -1389,6 +1416,87 @@ button {
 
   .modal__header {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 560px) {
+  .section {
+    padding: 1.5rem 0 3rem;
+  }
+
+  .hero {
+    padding-top: 0.75rem;
+    padding-bottom: 0.15rem;
+  }
+
+  .hero + .portrait-section {
+    padding-top: 0.15rem;
+  }
+
+  .hero__media {
+    min-height: 18rem;
+    padding: 1.1rem;
+  }
+
+  .portrait-section {
+    gap: 1rem;
+  }
+
+  .portrait-note__figure {
+    aspect-ratio: 5 / 6;
+  }
+
+  .portrait-note__figure img {
+    object-position: center 30%;
+  }
+}
+
+@supports (height: 1svh) {
+  @media (max-width: 780px) {
+    .hero__media {
+      min-height: min(48svh, 26rem);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .hero__media {
+      min-height: min(40svh, 21rem);
+    }
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .portrait-note,
+  .portrait-essay__layout,
+  .little-things-note__layout {
+    display: block;
+  }
+
+  .portrait-note__figure,
+  .portrait-note__panel,
+  .portrait-essay,
+  .little-things-note {
+    overflow: visible;
+  }
+
+  .portrait-note__figure {
+    min-height: 0;
+    margin-bottom: 1rem;
+  }
+
+  .portrait-note__figure img {
+    height: auto;
+    min-height: 0;
+  }
+
+  .portrait-essay__body {
+    column-count: 1;
+    column-rule: 0;
+  }
+
+  .portrait-essay__aside,
+  .little-things-list {
+    margin-top: 1rem;
   }
 }
 
