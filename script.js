@@ -335,13 +335,6 @@ function createMediaCard(item) {
     button.appendChild(createImagePreview(item, button));
   }
 
-  if (item.type === "video") {
-    const badge = document.createElement("span");
-    badge.className = "media-card__badge";
-    badge.textContent = "Preview";
-    button.appendChild(badge);
-  }
-
   const meta = document.createElement("span");
   meta.className = "media-card__meta";
 
