@@ -24,6 +24,8 @@ const galleryState = {
   visibleCount: galleryContent.batchSize
 };
 
+let galleryPreviewObserver;
+
 const itemOrder = new Map(
   galleryContent.items.map((item, index) => [item.id, index])
 );
@@ -95,6 +97,15 @@ function getEffectiveVideoPoster(item) {
   return getDerivedVideoPoster(item.src);
 }
 
+function syncMediaDimensions(button, width, height) {
+  if (!button || !width || !height) {
+    return;
+  }
+
+  button.style.setProperty("--media-ratio", `${width} / ${height}`);
+  button.dataset.orientation = height > width ? "portrait" : "landscape";
+}
+
 function resetLightboxMedia() {
   lightboxContent?.querySelectorAll("video").forEach((video) => {
     video.pause();
@@ -153,7 +164,7 @@ function createImagePreview(item, button) {
   return image;
 }
 
-function createVideoPreview(item, button) {
+function createVideoPosterPreview(item, button) {
   const poster = getEffectiveVideoPoster(item);
   const image = document.createElement("img");
   image.src = poster;
@@ -161,8 +172,7 @@ function createVideoPreview(item, button) {
   image.loading = "lazy";
 
   image.addEventListener("load", () => {
-    button.style.setProperty("--media-ratio", `${image.naturalWidth} / ${image.naturalHeight}`);
-    button.dataset.orientation = image.naturalHeight > image.naturalWidth ? "portrait" : "landscape";
+    syncMediaDimensions(button, image.naturalWidth, image.naturalHeight);
   }, { once: true });
 
   image.addEventListener("error", () => {
@@ -170,6 +180,96 @@ function createVideoPreview(item, button) {
   }, { once: true });
 
   return image;
+}
+
+function createVideoPreview(item, button) {
+  const video = document.createElement("video");
+  video.className = "media-card__preview";
+  video.src = item.src;
+  video.poster = getEffectiveVideoPoster(item);
+  video.muted = true;
+  video.defaultMuted = true;
+  video.loop = true;
+  video.autoplay = true;
+  video.playsInline = true;
+  video.preload = "metadata";
+  video.disablePictureInPicture = true;
+  video.setAttribute("aria-hidden", "true");
+  video.setAttribute("tabindex", "-1");
+  video.setAttribute("autoplay", "");
+  video.setAttribute("loop", "");
+  video.setAttribute("muted", "");
+  video.setAttribute("playsinline", "");
+  video.setAttribute("webkit-playsinline", "");
+
+  video.addEventListener("loadedmetadata", () => {
+    syncMediaDimensions(button, video.videoWidth, video.videoHeight);
+  }, { once: true });
+
+  video.addEventListener("error", () => {
+    video.replaceWith(createVideoPosterPreview(item, button));
+  }, { once: true });
+
+  return video;
+}
+
+function startGalleryPreview(video) {
+  if (!video?.isConnected) {
+    return;
+  }
+
+  const playPromise = video.play();
+  if (playPromise?.catch) {
+    playPromise.catch(() => {});
+  }
+}
+
+function stopGalleryPreview(video) {
+  video?.pause();
+}
+
+function setupGalleryVideoPreviews() {
+  if (!galleryGrid) {
+    return;
+  }
+
+  const previewVideos = galleryGrid.querySelectorAll(".media-card__preview");
+
+  if (galleryPreviewObserver) {
+    galleryPreviewObserver.disconnect();
+    galleryPreviewObserver = undefined;
+  }
+
+  if (!previewVideos.length) {
+    return;
+  }
+
+  if (!("IntersectionObserver" in window)) {
+    previewVideos.forEach((video) => {
+      startGalleryPreview(video);
+    });
+    return;
+  }
+
+  galleryPreviewObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          startGalleryPreview(entry.target);
+        } else {
+          stopGalleryPreview(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.3,
+      rootMargin: "140px 0px"
+    }
+  );
+
+  previewVideos.forEach((video) => {
+    galleryPreviewObserver.observe(video);
+  });
 }
 
 function openLightbox(item) {
@@ -219,6 +319,7 @@ function createMediaCard(item) {
   button.dataset.src = item.src;
   button.dataset.caption = item.caption ?? "";
   button.dataset.date = item.date ?? "";
+  button.dataset.alt = item.alt ?? item.caption ?? "";
   button.dataset.fallback = item.fallback ?? "";
 
   if (item.type === "video") {
@@ -237,7 +338,7 @@ function createMediaCard(item) {
   if (item.type === "video") {
     const badge = document.createElement("span");
     badge.className = "media-card__badge";
-    badge.textContent = "Video";
+    badge.textContent = "Preview";
     button.appendChild(badge);
   }
 
@@ -296,6 +397,7 @@ function renderGallery() {
   visibleItems.forEach((item) => {
     galleryGrid.appendChild(createMediaCard(item));
   });
+  setupGalleryVideoPreviews();
 
   if (galleryCount) {
     if (filteredItems.length) {
@@ -369,7 +471,7 @@ galleryGrid?.addEventListener("click", (event) => {
     poster: card.dataset.poster,
     caption: card.dataset.caption,
     date: card.dataset.date,
-    alt: card.querySelector("img")?.alt ?? ""
+    alt: card.dataset.alt ?? ""
   });
 });
 
