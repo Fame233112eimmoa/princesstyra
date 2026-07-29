@@ -617,6 +617,10 @@ button {
   pointer-events: none;
 }
 
+.media-card--video {
+  background: #120d0d;
+}
+
 .media-card::after {
   content: "";
   position: absolute;
@@ -948,6 +952,28 @@ button {
 
   .gallery-grid {
     grid-template-columns: 1fr;
+  }
+
+  .media-card--video {
+    aspect-ratio: var(--media-ratio, 9 / 16);
+  }
+
+  .media-card--video[data-orientation="landscape"] {
+    aspect-ratio: var(--media-ratio, 16 / 9);
+  }
+
+  .media-card--video video {
+    object-fit: contain;
+    background: #120d0d;
+  }
+
+  .media-card--video::after {
+    background: linear-gradient(
+      180deg,
+      rgba(26, 26, 26, 0) 48%,
+      rgba(55, 16, 22, 0.16) 72%,
+      rgba(55, 16, 22, 0.62) 100%
+    );
   }
 
   .gallery-controls {
