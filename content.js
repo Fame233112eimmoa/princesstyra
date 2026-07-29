@@ -13,6 +13,17 @@ window.siteContent = {
       { id: "calls", label: "Calls" },
       { id: "milestones", label: "Milestones" }
     ],
+    featuredVideoOrder: [
+      "media/videos/29.MP4",
+      "media/videos/40.MOV",
+      "media/videos/42.MOV",
+      "media/videos/33.MOV",
+      "media/videos/27.MOV",
+      "media/videos/31.MOV",
+      "media/videos/34.MOV",
+      "media/videos/18.MOV",
+      "media/videos/23.MOV"
+    ],
     items: [
       {
         id: "memory-001",

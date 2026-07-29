@@ -26,6 +26,14 @@ const galleryState = {
   visibleCount: galleryContent.batchSize
 };
 
+const itemOrder = new Map(
+  galleryContent.items.map((item, index) => [item.id, index])
+);
+
+const featuredVideoOrder = new Map(
+  (galleryContent.featuredVideoOrder ?? []).map((src, index) => [src, index])
+);
+
 function matchesFilter(item, filterId) {
   if (filterId === "all") {
     return true;
@@ -43,7 +51,32 @@ function matchesFilter(item, filterId) {
 }
 
 function getFilteredItems() {
-  return galleryContent.items.filter((item) => matchesFilter(item, galleryState.activeFilter));
+  const filteredItems = galleryContent.items.filter((item) =>
+    matchesFilter(item, galleryState.activeFilter)
+  );
+
+  if (galleryState.activeFilter !== "video" || featuredVideoOrder.size === 0) {
+    return filteredItems;
+  }
+
+  return [...filteredItems].sort((first, second) => {
+    const firstRank = featuredVideoOrder.get(first.src);
+    const secondRank = featuredVideoOrder.get(second.src);
+
+    if (firstRank !== undefined && secondRank !== undefined) {
+      return firstRank - secondRank;
+    }
+
+    if (firstRank !== undefined) {
+      return -1;
+    }
+
+    if (secondRank !== undefined) {
+      return 1;
+    }
+
+    return (itemOrder.get(first.id) ?? 0) - (itemOrder.get(second.id) ?? 0);
+  });
 }
 
 function getDerivedVideoPoster(src) {
