@@ -1,0 +1,12 @@
+<svg width="1200" height="1200" viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="1200" fill="#EFE8DF"/>
+  <rect x="74" y="74" width="1052" height="1052" rx="28" fill="#FAF7F2"/>
+  <rect x="182" y="182" width="836" height="836" rx="24" fill="#E4D7C9"/>
+  <circle cx="600" cy="600" r="148" fill="#FBF9F5"/>
+  <path d="M548 516L704 600L548 684V516Z" fill="#B29F8C"/>
+  <circle cx="292" cy="292" r="32" fill="#F8F4EE"/>
+  <circle cx="908" cy="292" r="32" fill="#F8F4EE"/>
+  <circle cx="292" cy="908" r="32" fill="#F8F4EE"/>
+  <circle cx="908" cy="908" r="32" fill="#F8F4EE"/>
+  <text x="206" y="1026" fill="#61584F" font-family="Georgia, serif" font-size="40" letter-spacing="10">SUNDAY FILM</text>
+</svg>

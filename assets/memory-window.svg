@@ -1,0 +1,12 @@
+<svg width="1200" height="1200" viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="1200" fill="#EFE8DF"/>
+  <rect x="74" y="74" width="1052" height="1052" rx="28" fill="#FBFAF6"/>
+  <rect x="252" y="216" width="404" height="600" fill="#F3EEE6"/>
+  <rect x="656" y="216" width="292" height="600" fill="#E6DDD3"/>
+  <rect x="252" y="216" width="696" height="600" stroke="#B3A697" stroke-width="10"/>
+  <path d="M656 216V816" stroke="#B3A697" stroke-width="10"/>
+  <path d="M252 516H948" stroke="#B3A697" stroke-width="10"/>
+  <path d="M736 816C808 866 884 916 964 966" stroke="#D5C9BE" stroke-width="18" stroke-linecap="round"/>
+  <path d="M312 894H728" stroke="#C8BCB0" stroke-width="22" stroke-linecap="round"/>
+  <text x="126" y="1042" fill="#61584F" font-family="Georgia, serif" font-size="40" letter-spacing="10">WINDOW LIGHT</text>
+</svg>

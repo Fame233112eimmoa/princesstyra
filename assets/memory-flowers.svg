@@ -1,0 +1,11 @@
+<svg width="1200" height="1500" viewBox="0 0 1200 1500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="1500" fill="#F1ECE5"/>
+  <rect x="74" y="74" width="1052" height="1352" rx="28" fill="#FBFAF6"/>
+  <path d="M604 1120C604 938 624 786 676 594" stroke="#8F8172" stroke-width="7" stroke-linecap="round"/>
+  <path d="M674 596C770 598 858 532 890 444C800 440 712 484 674 596Z" stroke="#B5A89A" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M674 620C764 674 864 678 960 634C902 558 808 528 674 620Z" stroke="#D3C8BC" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M658 710C552 700 458 740 372 826C470 872 566 860 658 710Z" stroke="#B5A89A" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M684 720C730 828 812 900 926 934C922 824 846 744 684 720Z" stroke="#D3C8BC" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="664" cy="602" r="38" fill="#E1D5C8"/>
+  <text x="124" y="1320" fill="#61584F" font-family="Georgia, serif" font-size="46" letter-spacing="10">NOTE WITH FLOWERS</text>
+</svg>

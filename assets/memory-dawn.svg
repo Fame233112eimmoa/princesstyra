@@ -1,0 +1,9 @@
+<svg width="1200" height="1500" viewBox="0 0 1200 1500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="1500" fill="#EFE8DF"/>
+  <rect x="70" y="70" width="1060" height="1360" rx="30" fill="#F9F7F3"/>
+  <ellipse cx="836" cy="426" rx="204" ry="204" fill="#E7DACC"/>
+  <path d="M148 1022C288 890 436 826 646 806C840 788 970 836 1056 882V1198H148V1022Z" fill="#DDD0C1"/>
+  <path d="M148 1114C298 968 464 916 660 902C850 888 982 930 1056 976" stroke="#8F8172" stroke-width="4" stroke-linecap="round"/>
+  <path d="M148 1160C322 1028 502 986 700 976C856 970 960 996 1056 1046" stroke="#B2A495" stroke-width="2" stroke-linecap="round"/>
+  <text x="148" y="1326" fill="#61584F" font-family="Georgia, serif" font-size="46" letter-spacing="12">DAWN</text>
+</svg>
