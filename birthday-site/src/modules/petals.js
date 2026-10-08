@@ -3,8 +3,8 @@ import { token } from './util.js';
 const GRAVITY = 520;
 
 export function createPetals(canvas, { reduced }) {
-  const COLORS = ['--tint-200', '--tint-100', '--accent-300', '--tint-200'].map(token);
-  const BLAST_COLORS = ['--tint-200', '--accent-300', '--accent-500', '--tint-100', '--accent-700', '--accent-300'].map(token);
+  const COLORS = ['--petal-blush', '--petal-pink', '--petal-rose', '--petal-red'].map(token);
+  const BLAST_COLORS = ['--petal-blush', '--petal-pink', '--petal-rose', '--petal-red', '--petal-deep', '--petal-pink'].map(token);
   const ctx = canvas.getContext('2d');
   const petals = [];
   let w = 0;

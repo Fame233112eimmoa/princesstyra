@@ -15,6 +15,12 @@
   --line-accent: rgba(79, 107, 72, 0.28);
   --scrim: rgba(248, 249, 245, 0.97);
   --smoke: rgba(94, 106, 97, 0.28);
+  /* Petals stay pink and red, whatever the theme */
+  --petal-blush: #f8cdd6;
+  --petal-pink: #f19bb0;
+  --petal-rose: #e2627f;
+  --petal-red: #cc2a45;
+  --petal-deep: #9c1830;
   --flame-core: #ffffff;
   --flame-mid: #fff2cf;
   --flame-edge: #ffbe5c;
