@@ -12,7 +12,9 @@ const fileFor = (config, page) => config.chapters.find((c) => c.page === page)?.
 export function initWishes(config, { player, petals, mode }) {
   const grid = $(`[data-wishes="${mode}"]`);
   const note = $('[data-wish-note]', grid.closest('section'));
-  const friends = config.wishes.friends.map((f, i) => ({ ...f, id: `friend-${i}`, label: f.relation, heading: f.name, playerTitle: `From ${f.name}` }));
+  // "Your sister" reads as "From your sister" in the player.
+  const from = (name) => `From ${/^Your\s/.test(name) ? 'y' + name.slice(1) : name}`;
+  const friends = config.wishes.friends.map((f, i) => ({ ...f, id: `friend-${i}`, label: f.relation, heading: f.name, playerTitle: from(f.name) }));
   const mine = config.fromMe.videos.map((v, i) => ({ ...v, id: `me-${i}`, label: v.note, heading: v.title, playerTitle: v.title, initial: config.myName }));
   const entries = mode === 'me' ? mine : friends;
   const lockMine = mode === 'me' && config.fromMe.lockUntilFriendsWatched;
@@ -69,7 +71,7 @@ export function initWishes(config, { player, petals, mode }) {
       showNote(`
         <span class="wish__lock">${LOCK}<span class="label label--accent">${esc(config.fromMe.lockedText)}</span></span>
         <p>${done} of ${total} watched. These open as soon as you have seen them all.</p>
-        <a class="next__inline" href="${esc(fileFor(config, 'friends'))}" data-nav>Go to wishes from friends ${ARROW}</a>`);
+        <a class="next__inline" href="${esc(fileFor(config, 'friends'))}" data-nav>Go to Your loved ones ${ARROW}</a>`);
     } else if (mode === 'me') {
       note.hidden = true;
     }
@@ -77,7 +79,7 @@ export function initWishes(config, { player, petals, mode }) {
     if (mode === 'friends' && total > 0 && done >= total) {
       showNote(`
         <span class="label label--accent">That is everyone</span>
-        <p>Every friend's wish, watched. Now there are a few from me.</p>
+        <p>Every wish from your loved ones, watched. Now there are a few from me.</p>
         <a class="next__inline" href="${esc(fileFor(config, 'me'))}" data-nav>Watch my wishes for you ${ARROW}</a>`);
     }
   }
@@ -90,7 +92,7 @@ export function initWishes(config, { player, petals, mode }) {
     refresh();
     const after = friendProgress();
     if (mode === 'friends' && before.done < before.total && after.done >= after.total) {
-      petals.shower(50);
+      petals.shower(22);
       gsap.from(note, { y: 20, opacity: 0, duration: 1.2, ease: 'power3.out' });
     }
   }

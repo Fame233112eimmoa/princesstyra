@@ -33,7 +33,7 @@ export function createScroll({ reduced }) {
       ScrollTrigger.refresh();
     },
     scrollTo(el, { offset = 0 } = {}) {
-      if (lenis) lenis.scrollTo(el, { offset, duration: 1.6 });
+      if (lenis) lenis.scrollTo(el, { offset, duration: 1 });
       else window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY + offset });
     },
     // For modals: freeze scrolling without moving the page.

@@ -25,9 +25,6 @@ function ambient() {
     });
   });
 
-  $$('.story__item').forEach((item) => {
-    ScrollTrigger.create({ trigger: item, start: 'top 60%', onEnter: () => item.classList.add('is-active') });
-  });
 }
 
 function reducedMotion() {
@@ -35,7 +32,6 @@ function reducedMotion() {
   $$('[data-fade], [data-split], [data-reveal], [data-brighten], [data-stagger], .reason, .wish').forEach((el) => {
     gsap.from(el, { opacity: 0, duration: 0.8, ease: 'power1.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
   });
-  if ($('.story__line')) gsap.set('.story__line span', { scaleY: 1 });
   return { playHero() {} };
 }
 
@@ -139,52 +135,6 @@ function fullMotion() {
   $$('.ls-head__rule').forEach((rule) => {
     gsap.from(rule, { scaleX: 0, duration: 1.6, ease: 'expo.out', scrollTrigger: { trigger: rule, start: 'top 88%', once: true } });
   });
-
-  // Timeline line draws with scroll.
-  if ($('.story__list')) gsap.fromTo(
-    '.story__line span',
-    { scaleY: 0 },
-    { scaleY: 1, ease: 'none', scrollTrigger: { trigger: '.story__list', start: 'top 60%', end: 'bottom 60%', scrub: 0.5 } },
-  );
-
-  // Gallery: pinned horizontal scroll with inner parallax.
-  const section = $('#gallery');
-  const track = $('.gallery__track');
-  if (section && track) {
-    const distance = () => Math.max(0, track.scrollWidth - section.clientWidth);
-    const slide = gsap.to(track, {
-      x: () => -distance(),
-      ease: 'none',
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: () => `+=${distance()}`,
-        pin: true,
-        scrub: 0.6,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-      },
-    });
-    $$('.gallery__item', track).forEach((item) => {
-      gsap.fromTo(
-        $('img', item),
-        { xPercent: 6 },
-        {
-          xPercent: -6,
-          ease: 'none',
-          scrollTrigger: { trigger: item, containerAnimation: slide, start: 'left right', end: 'right left', scrub: true },
-        },
-      );
-    });
-    gsap.from($$('.gallery__item', track).slice(0, 3), {
-      y: 60,
-      opacity: 0,
-      duration: 1.4,
-      stagger: 0.12,
-      ease: 'expo.out',
-      scrollTrigger: { trigger: section, start: 'top 70%', once: true },
-    });
-  }
 
   // Reason cards arrive in soft batches.
   if ($('.reason')) gsap.set('.reason', { opacity: 0, y: 40 });

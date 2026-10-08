@@ -28,12 +28,10 @@ const config = {
   // {age} and {name} are filled in automatically.
   chapters: [
     { page: 'home', file: 'index.html', numeral: 'Prologue', title: 'Make a wish', line: 'Candles, cake, and the start of your birthday.' },
-    { page: 'story', file: 'story.html', numeral: 'Chapter I', title: 'The birthday girl', line: 'The moments that made this birthday worth celebrating.' },
-    { page: 'letter', file: 'letter.html', numeral: 'Chapter II', title: 'Since June 5th', line: 'My birthday letter to you. Read it slowly, and come back to it often.' },
+    { page: 'letter', file: 'letter.html', numeral: 'Chapter I', title: 'Our story', line: 'My birthday letter to you. Read it slowly, and come back to it often.' },
+    { page: 'friends', file: 'wishes.html', numeral: 'Chapter II', title: 'Your loved ones', line: 'The people who love you have something to say.' },
     { page: 'love', file: 'love.html', numeral: 'Chapter III', title: '{age} reasons', line: 'One for every year of you.' },
-    { page: 'friends', file: 'wishes.html', numeral: 'Chapter IV', title: 'Wishes from friends', line: 'The people who love you have something to say.' },
-    { page: 'me', file: 'from-me.html', numeral: 'Chapter V', title: 'Wishes from me', line: 'My birthday messages to you, on video.' },
-    { page: 'surprise', file: 'surprise.html', numeral: 'Chapter VI', title: 'Your birthday surprise', line: 'One more wish, and a gift to unwrap.' },
+    { page: 'me', file: 'from-me.html', numeral: 'Chapter IV', title: 'Wishes from me', line: 'My video messages to you, one more wish of your own, and a gift to unwrap.' },
   ],
 
   // Optional colour overrides. Any key here replaces the matching CSS variable.
@@ -51,69 +49,6 @@ const config = {
 
   statement:
     'Of all the ordinary days I have lived, the ones with you in them are the ones I keep.',
-
-  timeline: {
-    title: 'Every year with you',
-    intro: 'A few of the moments I am celebrating today, alongside you.',
-    items: [
-      {
-        chapter: 'Chapter one',
-        date: '', // e.g. 'March 2025'
-        title: 'The first dinner',
-        text: 'I remember almost nothing about the food and everything about the way you laughed.',
-        photo: 'assets/photos/39.jpg',
-        alt: 'The two of us talking at dinner',
-      },
-      {
-        chapter: 'Chapter two',
-        date: '',
-        title: 'Learning distance',
-        text: 'Calls that ran past midnight. Your face on a small screen still lit up the whole room.',
-        photo: 'assets/photos/1.jpg',
-        alt: 'A phone showing a video call while sitting outside',
-      },
-      {
-        chapter: 'Chapter three',
-        date: '',
-        title: 'The passenger seat',
-        text: 'Some of my favourite hours are the quiet ones, going nowhere in particular with you.',
-        photo: 'assets/photos/2.jpg',
-        alt: 'Tyra in the passenger seat of a car',
-      },
-      {
-        chapter: 'Chapter four',
-        date: '',
-        title: 'One hundred days',
-        text: 'We counted them, and somehow it felt like both a long time and no time at all.',
-        photo: 'assets/photos/40.jpg',
-        alt: 'A collage celebrating one hundred days together',
-      },
-      {
-        chapter: 'Chapter five',
-        date: '',
-        title: 'A quiet night in',
-        text: 'The kind of closeness that makes everything else go silent.',
-        photo: 'assets/photos/15.jpg',
-        alt: 'A close-up of the two of us resting together',
-      },
-    ],
-  },
-
-  gallery: {
-    title: 'The birthday girl, in frames',
-    intro: 'Tap any photo to see it larger.',
-    photos: [
-      { src: 'assets/photos/46.jpg', alt: 'Tyra in a black dress against a marble wall', caption: 'Marble, and you in black' },
-      { src: 'assets/photos/43.jpg', alt: 'Dinner portrait in burgundy', caption: 'Dinner, and you in burgundy' },
-      { src: 'assets/photos/47.jpg', alt: 'Standing outdoors in a textured pink dress', caption: 'Dressed like the day mattered' },
-      { src: 'assets/photos/38.jpg', alt: 'Mirror portrait in a fitted black outfit', caption: 'Effortless, as always' },
-      { src: 'assets/photos/5.jpg', alt: 'Candid dinner photo in a peach outfit', caption: 'Mid-sentence, mid-smile' },
-      { src: 'assets/photos/49.jpg', alt: 'Portrait in blue scrubs', caption: 'The future, already looking good on you' },
-      { src: 'assets/photos/36.jpg', alt: 'Close selfie in black with a peace sign', caption: 'A small burst of light' },
-      { src: 'assets/photos/44.jpg', alt: 'Seated dinner portrait in burgundy', caption: 'An evening worth keeping' },
-      { src: 'assets/photos/48.jpg', alt: 'Mirror photo with a jacket and heart stickers', caption: 'A little playful drama' },
-    ],
-  },
 
   reasons: {
     title: 'Reasons I love you',
@@ -407,6 +342,8 @@ And remember that on your 23rd birthday, there was someone who looked at your li
       { x: 73.63, y: 19.3 },
       { x: 79.3, y: 11.4 },
     ],
+    // Seconds from the last candle going out to your video starting.
+    celebrationSeconds: 3,
     // Your video birthday wish. It starts playing by itself, with sound, right after the celebration.
     // Put the file in public/assets/videos (a poster image is optional). The current file is a sample clip.
     afterVideo: {
@@ -428,9 +365,20 @@ And remember that on your 23rd birthday, there was someone who looked at your li
     title: 'Happy birthday, from all of us',
     intro: 'A few people who love you recorded a birthday message. Tap a card to play it.',
     friends: [
-      { name: 'Friend One', relation: 'Best friend', video: 'assets/videos/friend-1.mp4', poster: 'assets/videos/friend-1.jpg' },
-      { name: 'Friend Two', relation: 'Since school', video: 'assets/videos/friend-2.mp4', poster: 'assets/videos/friend-2.jpg' },
-      { name: 'Friend Three', relation: 'Family', video: 'assets/videos/friend-3.mp4', poster: 'assets/videos/friend-3.jpg' },
+      { name: 'Your sister', relation: 'Family', video: 'assets/videos/sister.mp4', poster: 'assets/videos/sister.jpg' },
+      { name: 'Your brother', relation: 'Family', video: 'assets/videos/brother.mp4', poster: 'assets/videos/brother.jpg' },
+      { name: 'Milly', relation: 'Friend', video: 'assets/videos/milly.mp4', poster: 'assets/videos/milly.jpg' },
+      // Add their names here
+      { name: 'A friend', relation: 'Friend', video: 'assets/videos/friend-1.mp4', poster: 'assets/videos/friend-1.jpg' },
+      { name: 'A friend', relation: 'Friend', video: 'assets/videos/friend-2.mp4', poster: 'assets/videos/friend-2.jpg' },
+    ],
+    // Photos shown under the videos. wide: true for landscape photos.
+    photosTitle: 'Your favourite people',
+    photos: [
+      { src: 'assets/loved/bestie.jpg', alt: 'Tyra and her best friend blowing kisses', caption: 'You and your bestie' },
+      { src: 'assets/loved/together-1.jpg', alt: 'Tyra smiling with two friends, in black and white', caption: 'Together', wide: true },
+      { src: 'assets/loved/mirror.jpg', alt: 'A mirror selfie with a friend', caption: 'Mirror moments' },
+      { src: 'assets/loved/together-2.jpg', alt: 'Tyra with two friends, in black and white', caption: 'Always together', wide: true },
     ],
   },
 
@@ -440,7 +388,7 @@ And remember that on your 23rd birthday, there was someone who looked at your li
     intro: 'A few things I wanted to tell you on your birthday, face to face, even through a screen.',
     // When true, these unlock once she has watched every available friend video.
     lockUntilFriendsWatched: true,
-    lockedText: "Watch your friends' wishes first",
+    lockedText: "Watch your loved ones' wishes first",
     videos: [
       { title: 'Happy birthday, my love', note: 'Start with this one.', video: 'assets/videos/from-me-1.mp4', poster: 'assets/videos/from-me-1.jpg' },
       { title: 'What this year meant to me', note: '', video: 'assets/videos/from-me-2.mp4', poster: 'assets/videos/from-me-2.jpg' },

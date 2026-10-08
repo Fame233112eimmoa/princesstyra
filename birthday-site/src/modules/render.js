@@ -69,61 +69,6 @@ function statement(c) {
   </section>`;
 }
 
-function story(c) {
-  const items = c.timeline.items
-    .map(
-      (it) => `
-      <li class="story__item">
-        <span class="story__dot" aria-hidden="true"></span>
-        ${media(it.photo, it.alt, 'story__media')}
-        <div class="story__copy" data-fade>
-          <div class="story__meta">
-            <span class="label label--accent">${esc(it.chapter)}</span>
-            ${it.date ? `<span class="label">${esc(it.date)}</span>` : ''}
-          </div>
-          <h3 class="story__title">${esc(it.title)}</h3>
-          <p class="story__text">${esc(it.text)}</p>
-        </div>
-      </li>`,
-    )
-    .join('');
-  return `
-  <section class="section story" id="story" data-tone="white" aria-labelledby="story-title">
-    <div class="container">
-      <header class="section-head">
-        <span class="label" data-fade>Our story</span>
-        <h2 class="title" id="story-title" data-split>${esc(c.timeline.title)}</h2>
-        <p class="lede" data-fade>${esc(c.timeline.intro)}</p>
-      </header>
-      <div class="story__track">
-        <span class="story__line" aria-hidden="true"><span></span></span>
-        <ol class="story__list">${items}</ol>
-      </div>
-    </div>
-  </section>`;
-}
-
-function gallery(c) {
-  const items = c.gallery.photos
-    .map(
-      (p, i) => `
-      <button class="gallery__item" type="button" data-index="${i}" aria-label="Enlarge photo: ${esc(p.caption || p.alt)}">
-        <div class="media"><img src="${esc(p.src)}" alt="${esc(p.alt)}" loading="lazy" decoding="async" /></div>
-        <span class="caption"><span class="gallery__num">${String(i + 1).padStart(2, '0')}</span><span class="serif-italic">${esc(p.caption)}</span></span>
-      </button>`,
-    )
-    .join('');
-  return `
-  <section class="section gallery" id="gallery" data-tone="tint" aria-labelledby="gallery-title">
-    <div class="gallery__head">
-      <span class="label" data-fade>Gallery</span>
-      <h2 class="title" id="gallery-title" data-split>${esc(c.gallery.title)}</h2>
-      <p class="lede" data-fade>${esc(c.gallery.intro)}</p>
-    </div>
-    <div class="gallery__viewport"><div class="gallery__track">${items}</div></div>
-  </section>`;
-}
-
 function reasons(c) {
   const count = Math.min(Number(c.age) || c.reasons.list.length, c.reasons.list.length);
   const cards = c.reasons.list
@@ -231,7 +176,9 @@ function letterStory(c) {
         <span class="ls-head__rule" aria-hidden="true"></span>
         <h2 class="ls-title" id="ls-${i}">${esc(part.title)}</h2>
       </header>
-      ${part.blocks.map(letterBlock).join('\n      ')}
+      <div class="ls-body">
+        ${part.blocks.map(letterBlock).join('\n        ')}
+      </div>
     </div>
   </section>`,
     )
@@ -316,8 +263,29 @@ function wishes(c) {
       </header>
       <div class="wishes__grid" data-wishes="friends"></div>
       <div class="wish-note" data-wish-note hidden></div>
+      ${lovedPhotos(c)}
     </div>
   </section>`;
+}
+
+function lovedPhotos(c) {
+  const photos = c.wishes.photos || [];
+  if (!photos.length) return '';
+  return `
+      <div class="lo-photos">
+        <h3 class="lo-photos__title" data-split>${esc(c.wishes.photosTitle || '')}</h3>
+        <div class="lo-photos__grid">
+          ${photos
+            .map(
+              (p) => `
+          <figure class="lo-photo ${p.wide ? 'lo-photo--wide' : ''}">
+            ${media(p.src, p.alt)}
+            ${p.caption ? `<figcaption class="serif-italic">${esc(p.caption)}</figcaption>` : ''}
+          </figure>`,
+            )
+            .join('')}
+        </div>
+      </div>`;
 }
 
 function fromMe(c) {
@@ -485,7 +453,7 @@ export function renderNav(c, page) {
       <button class="icon-btn overlay__close" type="button" data-close aria-label="Close menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
-      <nav class="menu__inner" aria-label="Chapters">
+      <nav class="menu__inner" aria-label="Chapters" data-dismiss data-lenis-prevent>
         <span class="label">For ${esc(c.herName)}</span>
         <ol class="menu__list">${links}</ol>
       </nav>
@@ -494,12 +462,10 @@ export function renderNav(c, page) {
 
 const PAGES = {
   home: (c) => [hero(c), cake(c), statement(c), chapters(c)],
-  story: (c) => [chapterHead(c, 'story'), story(c), gallery(c)],
   letter: (c) => [chapterHead(c, 'letter'), letterStory(c)],
   love: (c) => [chapterHead(c, 'love'), reasons(c)],
   friends: (c) => [chapterHead(c, 'friends'), wishes(c)],
-  me: (c) => [chapterHead(c, 'me'), fromMe(c)],
-  surprise: (c) => [chapterHead(c, 'surprise'), jar(c), scratch(c), closing(c)],
+  me: (c) => [chapterHead(c, 'me'), fromMe(c), jar(c), scratch(c), closing(c)],
 };
 
 export function renderPage(c, page) {

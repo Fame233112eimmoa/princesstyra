@@ -31,13 +31,15 @@ export function createModal(el, { scroll, label, onClose }) {
     }
   }
 
+  // Tapping the backdrop or any empty area marked data-dismiss closes it.
   el.addEventListener('click', (e) => {
-    if (e.target.closest('[data-close]') || e.target.classList.contains('overlay__backdrop')) close();
+    if (e.target.closest('[data-close]') || e.target.classList.contains('overlay__backdrop') || e.target.hasAttribute('data-dismiss')) close();
   });
 
   function open() {
     if (isOpen) return;
     isOpen = true;
+    gsap.killTweensOf(el);
     returnFocus = document.activeElement;
     el.hidden = false;
     scroll.pause();
@@ -50,11 +52,23 @@ export function createModal(el, { scroll, label, onClose }) {
     isOpen = false;
     document.removeEventListener('keydown', onKey);
     await onClose?.();
+    // It may have been reopened while the closing fade was running.
+    if (isOpen) return;
     el.hidden = true;
     gsap.set(el, { clearProps: 'opacity' });
     scroll.resume();
     returnFocus?.focus?.({ preventScroll: true });
   }
 
-  return { open, close, get isOpen() { return isOpen; } };
+  // Hide at once, without animation (e.g. when the browser restores the page from Back).
+  function reset() {
+    isOpen = false;
+    document.removeEventListener('keydown', onKey);
+    gsap.killTweensOf(el);
+    el.hidden = true;
+    gsap.set(el, { clearProps: 'opacity' });
+    scroll.resume();
+  }
+
+  return { open, close, reset, get isOpen() { return isOpen; } };
 }

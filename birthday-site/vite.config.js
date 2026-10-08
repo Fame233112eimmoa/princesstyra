@@ -11,12 +11,10 @@ export default defineConfig({
     rollupOptions: {
       input: {
         home: page('index.html'),
-        story: page('story.html'),
         letter: page('letter.html'),
         love: page('love.html'),
         wishes: page('wishes.html'),
         fromMe: page('from-me.html'),
-        surprise: page('surprise.html'),
       },
     },
   },

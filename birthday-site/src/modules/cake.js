@@ -2,6 +2,13 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { $, $$, esc, fileExists, imageExists } from './util.js';
 
+// Safari 16.4+ lets a page say whether it is recording or just playing sound.
+function setAudioSession(type) {
+  try {
+    if (navigator.audioSession) navigator.audioSession.type = type;
+  } catch {}
+}
+
 export function initCake(config, { petals, music, scroll, reduced }) {
   const flames = config.cake.flames || [];
   const total = flames.length;
@@ -54,9 +61,12 @@ export function initCake(config, { petals, music, scroll, reduced }) {
     music.cue();
     say('');
     fireworks();
+    // The celebration lasts about 3 seconds, then your video takes over.
+    const total = Math.max(1.5, Number(config.cake.celebrationSeconds) || 3);
+    gsap.delayedCall(total - 1, showVideo);
     gsap.to(controls, {
       opacity: 0,
-      duration: 0.6,
+      duration: 0.4,
       onComplete: () => {
         controls.hidden = true;
         finale.hidden = false;
@@ -86,7 +96,7 @@ export function initCake(config, { petals, music, scroll, reduced }) {
   // Waves of petals and paper confetti: from the cake, from both bottom corners, then a shower from above.
   function fireworks() {
     if (reduced) {
-      petals.shower(30);
+      petals.shower(15);
       return;
     }
     const W = window.innerWidth;
@@ -94,21 +104,17 @@ export function initCake(config, { petals, music, scroll, reduced }) {
     const c = cakeCenter();
     rings();
     gsap.fromTo(cake, { scale: 1 }, { scale: 1.05, duration: 0.18, ease: 'power2.out', yoyo: true, repeat: 1, transformOrigin: '50% 90%' });
-    petals.burst({ x: c.x, y: c.y, count: 120, power: 1050, spread: Math.PI * 0.85 });
-    gsap.delayedCall(0.4, () => {
-      petals.burst({ x: -10, y: H * 0.9, angle: -Math.PI / 3.2, spread: 0.55, count: 75, power: 1400 });
-      petals.burst({ x: W + 10, y: H * 0.9, angle: -Math.PI + Math.PI / 3.2, spread: 0.55, count: 75, power: 1400 });
+    petals.burst({ x: c.x, y: c.y, count: 55, power: 1000, spread: Math.PI * 0.85 });
+    gsap.delayedCall(0.3, () => {
+      petals.burst({ x: -10, y: H * 0.9, angle: -Math.PI / 3.2, spread: 0.55, count: 30, power: 1350 });
+      petals.burst({ x: W + 10, y: H * 0.9, angle: -Math.PI + Math.PI / 3.2, spread: 0.55, count: 30, power: 1350 });
     });
-    gsap.delayedCall(0.95, () => {
+    gsap.delayedCall(0.7, () => {
       const p = cakeCenter();
       rings();
-      petals.burst({ x: p.x, y: p.y, count: 90, power: 850, spread: Math.PI * 1.3 });
+      petals.burst({ x: p.x, y: p.y, count: 35, power: 820, spread: Math.PI * 1.3 });
     });
-    gsap.delayedCall(1.5, () => petals.shower(100));
-    gsap.delayedCall(2.3, () => {
-      petals.burst({ x: W * 0.15, y: H * 0.95, angle: -Math.PI / 2.4, spread: 0.4, count: 50, power: 1250 });
-      petals.burst({ x: W * 0.85, y: H * 0.95, angle: -Math.PI + Math.PI / 2.4, spread: 0.4, count: 50, power: 1250 });
-    });
+    gsap.delayedCall(1.1, () => petals.shower(35));
   }
 
   // Wrap each character so the headline can arrive letter by letter (words never break mid-way).
@@ -153,6 +159,10 @@ export function initCake(config, { petals, music, scroll, reduced }) {
   let videoReady = false;
   let priming = false;
   let primed = false;
+  let allowed = false; // only true once the celebration hands over to the video
+  let wantsToPlay = false; // waiting to be on screen
+  let pausedOffscreen = false;
+  let onScreen = false;
 
   if (videoBox) {
     Promise.all([fileExists(after.video, 'video'), imageExists(after.poster)]).then(([hasVideo, hasPoster]) => {
@@ -174,6 +184,11 @@ export function initCake(config, { petals, music, scroll, reduced }) {
     };
     vid.addEventListener('play', () => {
       if (priming) return;
+      // Never let it play before the celebration is over.
+      if (!allowed) {
+        vid.pause();
+        return;
+      }
       frame.classList.add('is-playing');
       music.duck();
       vState.textContent = '';
@@ -186,7 +201,29 @@ export function initCake(config, { petals, music, scroll, reduced }) {
     vid.addEventListener('ended', () => {
       vState.textContent = 'Tap to watch again';
       vid.currentTime = 0;
+      pausedOffscreen = false;
     });
+
+    // Plays only while it's on screen: scrolling away pauses it, coming back resumes it.
+    new IntersectionObserver(
+      ([entry]) => {
+        onScreen = entry.intersectionRatio >= 0.35;
+        if (!allowed) return;
+        if (!onScreen && !vid.paused) {
+          pausedOffscreen = true;
+          vid.pause();
+        } else if (onScreen && (pausedOffscreen || wantsToPlay)) {
+          pausedOffscreen = false;
+          wantsToPlay = false;
+          playWithSoundFromCake();
+        }
+      },
+      { threshold: [0, 0.35, 0.7] },
+    ).observe(frame);
+
+    // Leaving the page or switching apps stops it too.
+    document.addEventListener('visibilitychange', () => document.hidden && vid.pause());
+    window.addEventListener('pagehide', () => vid.pause());
     vid.addEventListener('volumechange', setSoundUi);
 
     const playWithSound = () => {
@@ -199,8 +236,17 @@ export function initCake(config, { petals, music, scroll, reduced }) {
       });
     };
 
-    playBtn.addEventListener('click', () => videoReady && playWithSound());
-    vid.addEventListener('click', () => (vid.paused ? playWithSound() : vid.pause()));
+    playBtn.addEventListener('click', () => {
+      if (!videoReady) return;
+      allowed = true;
+      playWithSound();
+    });
+    vid.addEventListener('click', () => {
+      if (!videoShown) return;
+      allowed = true;
+      if (vid.paused) playWithSound();
+      else vid.pause();
+    });
     soundBtn.addEventListener('click', () => {
       vid.muted = false;
       if (vid.paused) vid.play().catch(() => {});
@@ -216,19 +262,21 @@ export function initCake(config, { petals, music, scroll, reduced }) {
   // Phones only allow a video to start with sound later if it was first started during a tap.
   // Her tap on "Tap to begin" (or on a candle) quietly unlocks it, silent and paused straight away.
   function primeVideo() {
-    if (!vid || primed || !videoReady) return;
+    if (!vid || primed) return;
+    if (!vid.src && after?.video) vid.src = after.video;
     primed = true;
     priming = true;
-    vid.muted = true;
-    vid
-      .play()
-      .then(() => {
-        vid.pause();
-        vid.currentTime = 0;
-      })
+    // Start it with sound and stop it in the same instant: nothing is heard, but iPhones then
+    // remember she allowed this video, so it can start with sound after the celebration.
+    // (A muted start does not count as permission for sound on iOS.)
+    vid.muted = false;
+    const started = vid.play();
+    vid.pause();
+    Promise.resolve(started)
       .catch(() => {})
       .finally(() => {
-        vid.muted = false;
+        vid.pause();
+        vid.currentTime = 0;
         priming = false;
       });
   }
@@ -240,14 +288,20 @@ export function initCake(config, { petals, music, scroll, reduced }) {
     ScrollTrigger.refresh();
     scroll.scrollTo(videoBox, { offset: -window.innerHeight * 0.06 });
     if (!reduced) {
-      gsap.from(videoBox.children, { opacity: 0, y: 40, duration: 1.4, stagger: 0.14, ease: 'expo.out', delay: 0.5 });
-      gsap.from(frame, { scale: 1.06, duration: 2.2, ease: 'power2.out', delay: 0.6 });
+      gsap.from(videoBox.children, { opacity: 0, y: 30, duration: 0.9, stagger: 0.08, ease: 'expo.out', delay: 0.2 });
+      gsap.from(frame, { scale: 1.05, duration: 1.6, ease: 'power2.out', delay: 0.2 });
     }
-    // Start once she has had a moment to see it arrive.
-    if (videoReady) gsap.delayedCall(reduced ? 0.6 : 1.5, playWithSoundFromCake);
+    // Start as soon as the page has glided to it.
+    if (videoReady)
+      gsap.delayedCall(1, () => {
+        allowed = true;
+        if (onScreen) playWithSoundFromCake();
+        else wantsToPlay = true;
+      });
   }
 
   function playWithSoundFromCake() {
+    if (!allowed) return;
     vid.muted = false;
     vid.play().catch(() => {
       vid.muted = true;
@@ -269,8 +323,7 @@ export function initCake(config, { petals, music, scroll, reduced }) {
     const again = $('[data-celebrate-again]', finale);
 
     if (reduced) {
-      gsap.from(finale.children, { opacity: 0, duration: 0.8, stagger: 0.15 });
-      gsap.delayedCall(1.5, showVideo);
+      gsap.from(finale.children, { opacity: 0, duration: 0.6, stagger: 0.1 });
       return;
     }
 
@@ -278,17 +331,15 @@ export function initCake(config, { petals, music, scroll, reduced }) {
     gsap.set(nameChars, { y: 0 });
     finaleTl = gsap
       .timeline()
-      .from(label, { opacity: 0, y: 16, duration: 1, ease: 'power3.out' })
-      .from(chars, { opacity: 0, yPercent: 110, rotate: 10, scale: 0.85, duration: 1.3, stagger: 0.045, ease: 'expo.out' }, 0.2)
-      .from(rule, { scaleX: 0, duration: 1.2, ease: 'expo.out' }, '-=0.6')
-      .from(line, { opacity: 0, y: 18, duration: 1.2, ease: 'power3.out' }, '-=0.9')
-      .from(again, { opacity: 0, duration: 0.8 }, '-=0.5')
+      .from(label, { opacity: 0, y: 16, duration: 0.6, ease: 'power3.out' })
+      .from(chars, { opacity: 0, yPercent: 110, rotate: 10, scale: 0.85, duration: 0.9, stagger: 0.03, ease: 'expo.out' }, 0.1)
+      .from(rule, { scaleX: 0, duration: 0.7, ease: 'expo.out' }, '-=0.5')
+      .from(line, { opacity: 0, y: 18, duration: 0.7, ease: 'power3.out' }, '-=0.5')
+      .from(again, { opacity: 0, duration: 0.5 }, '-=0.3')
       .add(() => {
         // Her name keeps a soft, slow float afterwards.
         floatTween = gsap.to(nameChars, { y: -6, duration: 1.5, ease: 'sine.inOut', yoyo: true, repeat: -1, stagger: { each: 0.12, yoyo: true, repeat: -1 } });
-      })
-      // Once the celebration settles, your video wish follows.
-      .add(() => gsap.delayedCall(1.2, showVideo));
+      });
   }
 
   $('[data-celebrate-again]', finale).addEventListener('click', () => {
@@ -338,6 +389,8 @@ export function initCake(config, { petals, music, scroll, reduced }) {
     mic.stream.getTracks().forEach((t) => t.stop());
     mic.ctx.close().catch(() => {});
     mic = null;
+    // iPhones keep sound on the quiet earpiece after the mic was in use; switch back to the speaker.
+    setAudioSession('playback');
     cake.classList.remove('is-gusting');
     cake.style.setProperty('--blow', 0);
   }
@@ -365,6 +418,7 @@ export function initCake(config, { petals, music, scroll, reduced }) {
     startBtn.disabled = true;
     say('Allow the microphone when asked.');
 
+    setAudioSession('play-and-record');
     let stream;
     try {
       stream = await navigator.mediaDevices.getUserMedia({
@@ -372,6 +426,7 @@ export function initCake(config, { petals, music, scroll, reduced }) {
       });
     } catch (err) {
       ctx.close().catch(() => {});
+      setAudioSession('playback');
       const denied = err && (err.name === 'NotAllowedError' || err.name === 'SecurityError');
       useTapMode(
         denied

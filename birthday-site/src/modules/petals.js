@@ -13,7 +13,7 @@ export function createPetals(canvas, { reduced }) {
   let last = 0;
   let running = false;
 
-  const ambientCount = reduced ? 0 : window.innerWidth < 700 ? 14 : 22;
+  const ambientCount = reduced ? 0 : window.innerWidth < 700 ? 7 : 11;
 
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -38,7 +38,7 @@ export function createPetals(canvas, { reduced }) {
       flip: Math.random() * Math.PI * 2,
       vf: 1 + Math.random() * 2,
       sway: Math.random() * Math.PI * 2,
-      alpha: burst ? 0.55 + Math.random() * 0.3 : 0.18 + Math.random() * 0.2,
+      alpha: burst ? 0.5 + Math.random() * 0.3 : 0.16 + Math.random() * 0.16,
       color: COLORS[(Math.random() * COLORS.length) | 0],
     };
   }

@@ -5,112 +5,6 @@ import { createModal, CLOSE_BUTTON } from './modal.js';
 const ARROW = (d) =>
   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="${d === 'prev' ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7'}"/></svg>`;
 
-/* ---------- Gallery lightbox (FLIP from the tapped photo) ---------- */
-// Uniform scale (no stretching) that centres the full image over the cropped thumbnail. Origin is top-left.
-function fitTransform(full, thumb) {
-  const scale = thumb.width / full.width;
-  return {
-    scale,
-    x: thumb.left - full.left,
-    y: thumb.top + thumb.height / 2 - (full.top + (full.height * scale) / 2),
-  };
-}
-
-export function initLightbox(config, { scroll, reduced }) {
-  if (!$('#gallery')) return;
-  const photos = config.gallery.photos;
-  const el = document.getElementById('lightbox');
-  el.innerHTML = `
-    <div class="overlay__backdrop"></div>
-    ${CLOSE_BUTTON}
-    <div class="lightbox__stage"><img class="lightbox__img" alt="" /></div>
-    <div class="lightbox__bar">
-      <button class="icon-btn" type="button" data-prev aria-label="Previous photo">${ARROW('prev')}</button>
-      <p class="lightbox__caption" aria-live="polite"></p>
-      <button class="icon-btn" type="button" data-next aria-label="Next photo">${ARROW('next')}</button>
-    </div>`;
-  const img = $('.lightbox__img', el);
-  const caption = $('.lightbox__caption', el);
-  const backdrop = $('.overlay__backdrop', el);
-  const bar = $('.lightbox__bar', el);
-  let index = 0;
-  let source = null;
-
-  const sourceImg = (i) => $(`.gallery__item[data-index="${i}"] img`);
-
-  function flipFrom(fromEl) {
-    if (reduced || !fromEl) return gsap.fromTo(img, { opacity: 0 }, { opacity: 1, duration: 0.4 });
-    const from = fitTransform(img.getBoundingClientRect(), fromEl.getBoundingClientRect());
-    return gsap.fromTo(img, { ...from, opacity: 1 }, { x: 0, y: 0, scale: 1, duration: 0.9, ease: 'expo.out' });
-  }
-
-  function show(i) {
-    index = (i + photos.length) % photos.length;
-    const p = photos[index];
-    img.src = p.src;
-    img.alt = p.alt;
-    caption.textContent = p.caption || '';
-  }
-
-  const modal = createModal(el, {
-    scroll,
-    label: 'Photo viewer',
-    onClose: () => {
-      const target = sourceImg(index);
-      const tl = gsap.timeline();
-      tl.to([backdrop, bar, $('[data-close]', el)], { opacity: 0, duration: 0.45, ease: 'power2.out' }, 0);
-      if (!reduced && target) {
-        const to = fitTransform(img.getBoundingClientRect(), target.closest('.media').getBoundingClientRect());
-        tl.to(img, { ...to, duration: 0.7, ease: 'expo.inOut' }, 0)
-          .to(img, { opacity: 0, duration: 0.2 }, 0.55);
-      } else {
-        tl.to(img, { opacity: 0, duration: 0.3 }, 0);
-      }
-      return tl.then(() => gsap.set([img, backdrop, bar, $('[data-close]', el)], { clearProps: 'all' }));
-    },
-  });
-
-  $('#gallery').addEventListener('click', async (e) => {
-    const item = e.target.closest('.gallery__item');
-    if (!item) return;
-    source = $('img', item);
-    show(Number(item.dataset.index));
-    modal.open();
-    if (!img.complete) await img.decode().catch(() => {});
-    gsap.fromTo([backdrop, bar], { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' });
-    flipFrom(source.closest('.media'));
-  });
-
-  const step = (d) => {
-    gsap.to(img, {
-      opacity: 0,
-      x: -24 * d,
-      duration: 0.25,
-      ease: 'power2.in',
-      onComplete: () => {
-        show(index + d);
-        gsap.fromTo(img, { opacity: 0, x: 24 * d }, { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' });
-      },
-    });
-  };
-  $('[data-prev]', el).addEventListener('click', () => step(-1));
-  $('[data-next]', el).addEventListener('click', () => step(1));
-  document.addEventListener('keydown', (e) => {
-    if (!modal.isOpen) return;
-    if (e.key === 'ArrowLeft') step(-1);
-    if (e.key === 'ArrowRight') step(1);
-  });
-
-  let touchX = null;
-  el.addEventListener('touchstart', (e) => (touchX = e.touches[0].clientX), { passive: true });
-  el.addEventListener('touchend', (e) => {
-    if (touchX === null) return;
-    const dx = e.changedTouches[0].clientX - touchX;
-    if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
-    touchX = null;
-  });
-}
-
 /* ---------- Reasons: tap to flip ---------- */
 export function initReasons() {
   $('.reasons__grid')?.addEventListener('click', (e) => {
@@ -166,7 +60,7 @@ export function initWishJar({ reduced, petals }) {
       .to(light, { y: `-=${rise}`, x: `+=${drift}`, duration: 4.2, ease: 'power1.inOut' }, 0.4)
       .to(light, { scale: 0.6, opacity: 0, duration: 1.6, ease: 'power1.in' }, 3);
     gsap.fromTo(jar, { rotate: 0 }, { rotate: 2, duration: 0.15, yoyo: true, repeat: 3, ease: 'sine.inOut', clearProps: 'rotate' });
-    if (count % 3 === 0) petals.shower(24);
+    if (count % 3 === 0) petals.shower(10);
   });
 }
 
@@ -209,7 +103,7 @@ export function initScratch({ petals }) {
     revealBtn.remove();
     gsap.to(canvas, { opacity: 0, duration: 0.9, ease: 'power2.out', onComplete: () => canvas.remove() });
     gsap.from('.scratch__reveal > *', { y: 16, duration: 1.1, stagger: 0.12, ease: 'power3.out' });
-    petals.shower(50);
+    petals.shower(22);
   }
 
   function clearedRatio() {
@@ -297,7 +191,7 @@ export function initEasterEgg(config, { scroll, petals }) {
     modal.open();
     gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.5 });
     gsap.fromTo($('.egg__card', el), { y: 30, scale: 0.97 }, { y: 0, scale: 1, duration: 1, ease: 'expo.out' });
-    petals.shower(40);
+    petals.shower(18);
   };
 
   let taps = [];

@@ -16,8 +16,24 @@ export function initNav({ scroll, music, reduced }) {
   $('[data-menu-open]').addEventListener('click', () => {
     modal.open();
     gsap.fromTo(menuEl, { opacity: 0 }, { opacity: 1, duration: 0.45, ease: 'power2.out' });
-    if (!reduced) gsap.from($$('.menu__link', menuEl), { y: 30, opacity: 0, duration: 1, stagger: 0.06, ease: 'expo.out' });
+    if (!reduced) gsap.fromTo($$('.menu__list li', menuEl), { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, stagger: 0.05, ease: 'expo.out' });
   });
+
+  // The Chapters button slides away while she scrolls down to read, and returns when she scrolls up.
+  const toggle = $('[data-menu-open]');
+  let lastY = window.scrollY;
+  window.addEventListener(
+    'scroll',
+    () => {
+      const y = window.scrollY;
+      if (Math.abs(y - lastY) < 6) return;
+      const nearEnd = y + window.innerHeight > document.documentElement.scrollHeight - 240;
+      toggle.classList.toggle('is-tucked', y > 160 && y > lastY && !nearEnd);
+      lastY = y;
+    },
+    { passive: true },
+  );
+  toggle.addEventListener('focus', () => toggle.classList.remove('is-tucked'));
 
   let leaving = false;
   document.addEventListener('click', (e) => {
@@ -25,6 +41,14 @@ export function initNav({ scroll, music, reduced }) {
     if (!link || e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0) return;
     e.preventDefault();
     if (leaving) return;
+
+    // Choosing the chapter you're already on just closes the menu and goes back to the top.
+    if (link.getAttribute('aria-current') === 'page') {
+      modal.close();
+      setTimeout(() => window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' }), 400);
+      return;
+    }
+
     leaving = true;
     const href = link.getAttribute('href');
     music.save();
@@ -32,15 +56,18 @@ export function initNav({ scroll, music, reduced }) {
       location.href = href;
       return;
     }
-    gsap.set(curtain, { visibility: 'visible' });
-    gsap.fromTo(curtain, { yPercent: 100 }, { yPercent: 0, duration: 0.75, ease: 'expo.in', onComplete: () => (location.href = href) });
+    // Rise above the open menu so the transition is visible.
+    gsap.set(curtain, { visibility: 'visible', zIndex: 400 });
+    gsap.fromTo(curtain, { yPercent: 100 }, { yPercent: 0, duration: 0.7, ease: 'expo.in', onComplete: () => (location.href = href) });
   });
 
-  // Coming back with the browser's back button can restore a page with the curtain still down.
+  // Coming back with the browser's Back button restores the page as it was left:
+  // put the curtain away, close the menu and let the page scroll again.
   window.addEventListener('pageshow', (e) => {
     if (!e.persisted) return;
     leaving = false;
-    gsap.set(curtain, { visibility: 'hidden' });
+    gsap.set(curtain, { visibility: 'hidden', clearProps: 'zIndex' });
+    modal.reset();
   });
 
   return {

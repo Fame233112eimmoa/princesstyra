@@ -11,7 +11,7 @@ import { initNav } from './modules/nav.js';
 import { initCake } from './modules/cake.js';
 import { initWishes } from './modules/wishes.js';
 import { createPlayer } from './modules/player.js';
-import { initLightbox, initReasons, initWishJar, initScratch, initEasterEgg } from './modules/features.js';
+import { initReasons, initWishJar, initScratch, initEasterEgg } from './modules/features.js';
 import { session } from './modules/util.js';
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -30,7 +30,6 @@ const player = createPlayer({ scroll, music });
 if (document.querySelector('[data-cake]')) initCake(config, { petals, music, scroll, reduced });
 const wishGrid = document.querySelector('[data-wishes]');
 if (wishGrid) initWishes(config, { player, petals, mode: wishGrid.dataset.wishes });
-initLightbox(config, { scroll, reduced });
 initReasons();
 initWishJar({ reduced, petals });
 initScratch({ petals });
@@ -50,16 +49,16 @@ const motion = initAnimations({ reduced });
     await runIntro(config, {
       reduced,
       onShow() {
-        petals.shower(40);
+        petals.shower(16);
         // Keep a gentle drift going for as long as she stays on the opening screen.
-        introDrift = setInterval(() => petals.shower(5), 1600);
+        introDrift = setInterval(() => petals.shower(2), 2400);
       },
       onOpen() {
         clearInterval(introDrift);
         session.set('bday-opened', '1');
         music.startFromGesture();
         motion.playHero();
-        petals.shower(36);
+        petals.shower(14);
       },
     });
   } else {

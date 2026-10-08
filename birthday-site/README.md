@@ -26,13 +26,11 @@ The site is split into chapters, one page each, so heavy content like long video
 
 | Page | File | Contains |
 | --- | --- | --- |
-| Prologue · Make a wish | `index.html` | Countdown, name intro, hero, the cake, "For you", list of chapters |
-| Chapter I · The birthday girl | `story.html` | Timeline and gallery |
-| Chapter II · Since June 5th | `letter.html` | Your letter, as a scrolling story in 14 parts |
+| Prologue · Make a wish | `index.html` | Name intro, hero, the cake and your video, "For you", list of chapters |
+| Chapter I · Our story | `letter.html` | Your letter, as a scrolling story in 14 parts |
+| Chapter II · Your loved ones | `wishes.html` | Video messages from friends and family |
 | Chapter III · 23 reasons | `love.html` | Reason cards |
-| Chapter IV · Wishes from friends | `wishes.html` | Friends' video messages |
-| Chapter V · Wishes from me | `from-me.html` | Your own birthday videos |
-| Chapter VI · Your birthday surprise | `surprise.html` | Wish jar, scratch card, closing |
+| Chapter IV · Wishes from me | `from-me.html` | Your videos, then the wish jar, scratch card and closing |
 
 - Rename chapters in `config.chapters`.
 - Every page has a **Chapters** menu (top right) and a "Next chapter" link at the bottom. Moving between pages uses a soft curtain transition.
@@ -53,8 +51,6 @@ Open `config.js` and edit:
 | `countdown` | `true` shows the countdown screen until her birthday, `false` turns it off for testing |
 | `password` | Optional secret word. Leave `''` to turn it off. It's a light privacy gate, not real security |
 | `hero`, `statement` | The first two sections |
-| `timeline.items` | Chapters of your story: title, text, optional date, photo |
-| `gallery.photos` | The horizontal gallery |
 | `reasons.list` | One card is shown per year of her age |
 | `letter` | Your letter (`text`), sign-off, `finalLine`, closing, optional `signature`. See [The letter](#the-letter) |
 | `cake` | Headline, candle count (defaults to age), mic `sensitivity` |
