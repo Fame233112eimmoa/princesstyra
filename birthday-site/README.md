@@ -48,7 +48,9 @@ Open `config.js` and edit:
 | Setting | What it does |
 | --- | --- |
 | `herName`, `myName`, `age` | Used throughout the site |
+| `herFullName`, `myFullName` | Shown in the footer |
 | `birthday` | `YYYY-MM-DD`. The site unlocks at local midnight on that date |
+| `countdown` | `true` shows the countdown screen until her birthday, `false` turns it off for testing |
 | `password` | Optional secret word. Leave `''` to turn it off. It's a light privacy gate, not real security |
 | `hero`, `statement` | The first two sections |
 | `timeline.items` | Chapters of your story: title, text, optional date, photo |

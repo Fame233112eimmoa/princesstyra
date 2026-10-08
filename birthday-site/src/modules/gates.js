@@ -12,7 +12,7 @@ export function isPreview() {
 // Countdown to local midnight on her birthday. Resolves once the time has come (or immediately in preview).
 export function runLock(config, { reduced }) {
   const target = parseDate(config.birthday).getTime();
-  if (isPreview() || Date.now() >= target) return Promise.resolve();
+  if (config.countdown === false || isPreview() || Date.now() >= target) return Promise.resolve();
 
   const el = document.getElementById('lock');
   el.hidden = false;

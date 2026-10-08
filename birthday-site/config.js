@@ -3,12 +3,17 @@
 
 const config = {
   herName: 'Tyra',
-  myName: 'Your Name',
+  herFullName: 'Tyra Maame Serwaa Akua Osei-Wusu',
+  myName: 'Joseph',
+  myFullName: 'Joseph Agyei Boateng',
 
-  // YYYY-MM-DD. The site unlocks at local midnight on this date.
-  // Add ?preview=1 to the URL to skip the countdown while you build.
-  birthday: '2026-12-14',
+  // Her birthday this year, YYYY-MM-DD (born 15 October 2003).
+  birthday: '2026-10-15',
   age: 23,
+
+  // The countdown screen that keeps the site locked until midnight on her birthday.
+  // Off while you test. Set to true when you're done; ?preview=1 still skips it for you.
+  countdown: false,
 
   // Leave empty to disable. Not real security: it only keeps casual eyes out.
   password: '',
@@ -357,7 +362,7 @@ I'll just look at you and think:
 
 # That man is me
 Until then, never forget this:
-There is a man somewhere in this world who is incredibly grateful that a girl named **Tyra Maame Serwaa Osei-Wusu** was born.
+There is a man somewhere in this world who is incredibly grateful that a girl named **Tyra Maame Serwaa Akua Osei-Wusu** was born.
 - A man who is proud to call you his love.
 - A man who believes in you even on the days you don't believe in yourself.
 - A man who wants to see you win.

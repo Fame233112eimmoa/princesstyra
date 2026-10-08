@@ -399,7 +399,8 @@ function footer(c) {
   return `
   <footer class="footer">
     <button class="egg-trigger" type="button" data-egg aria-label="A small secret">${heart}</button>
-    <span class="label footer__label">Made for ${esc(c.herName)}</span>
+    <span class="label footer__label">Made for ${esc(c.herFullName || c.herName)}</span>
+    <span class="label footer__label">With love, ${esc(c.myFullName || c.myName)}</span>
   </footer>`;
 }
 
