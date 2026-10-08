@@ -28,7 +28,7 @@ export function initWishes(config, { player, petals, mode }) {
       <button class="wish ${mode === 'me' ? 'wish--feature' : ''}" type="button" data-wish="${e.id}" disabled>
         <span class="wish__thumb"><span class="wish__initial" aria-hidden="true">${esc((e.initial || e.heading).charAt(0))}</span></span>
         <span class="wish__body">
-          <span class="label ${mode === 'me' ? 'label--accent' : ''}">${mode === 'me' ? `Video ${String(i + 1).padStart(2, '0')}` : esc(e.label || '')}</span>
+          <span class="label ${mode === 'me' ? 'label--accent' : ''}">${mode === 'me' ? (entries.length > 1 ? `Video ${String(i + 1).padStart(2, '0')}` : 'For you') : esc(e.label || '')}</span>
           <span class="wish__name">${esc(e.heading)}</span>
           ${mode === 'me' && e.label ? `<span class="wish__note">${esc(e.label)}</span>` : ''}
           <span class="wish__state">Checking...</span>

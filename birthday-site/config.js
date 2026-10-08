@@ -390,9 +390,7 @@ And remember that on your 23rd birthday, there was someone who looked at your li
     lockUntilFriendsWatched: false,
     lockedText: "Watch your loved ones' wishes first",
     videos: [
-      { title: 'Happy birthday, my love', note: 'Start with this one.', video: 'assets/videos/from-me-1.mp4', poster: 'assets/videos/from-me-1.jpg' },
-      { title: 'What this year meant to me', note: '', video: 'assets/videos/from-me-2.mp4', poster: 'assets/videos/from-me-2.jpg' },
-      { title: 'My birthday wish for you', note: 'Save this one for last.', video: 'assets/videos/from-me-3.mp4', poster: 'assets/videos/from-me-3.jpg' },
+      { title: 'Happy birthday, my love', note: '', video: 'assets/videos/from-me-1.mp4', poster: 'assets/videos/from-me-1.jpg' },
     ],
   },
 

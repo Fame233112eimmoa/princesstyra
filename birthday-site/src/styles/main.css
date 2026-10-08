@@ -1656,6 +1656,12 @@ p {
   grid-template-columns: 1fr;
 }
 
+/* A single video sits centred instead of stretching across the page */
+.wishes__grid--me:has(> .wish:only-child) {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
 @media (min-width: 760px) {
   .wishes__grid--me {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
