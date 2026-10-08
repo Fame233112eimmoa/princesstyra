@@ -422,8 +422,7 @@ And remember that on your 23rd birthday, there was someone who looked at your li
 
   closing: {
     line: 'Happy birthday, my love.',
-    photo: 'assets/photos/50.jpg',
-    alt: 'Tyra in soft afternoon light',
+    // Optional photo above the line, e.g. photo: 'assets/photos/50.jpg', alt: '...'
   },
 
   // Hidden: tap the small heart in the footer five times (or type her name on a keyboard).

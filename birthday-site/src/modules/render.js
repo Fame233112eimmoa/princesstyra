@@ -356,7 +356,7 @@ function closing(c) {
   return `
   <section class="section" id="closing" data-tone="white" aria-label="Closing">
     <div class="container closing">
-      ${media(c.closing.photo, c.closing.alt, 'closing__media')}
+      ${c.closing.photo ? media(c.closing.photo, c.closing.alt, 'closing__media') : ''}
       <h2 class="title" data-split>${esc(c.closing.line)}</h2>
       <p class="label">With love, ${esc(c.myName)}</p>
     </div>
@@ -367,7 +367,7 @@ function footer(c) {
   return `
   <footer class="footer">
     <button class="egg-trigger" type="button" data-egg aria-label="A small secret">${heart}</button>
-    <span class="label footer__label">Made for ${esc(c.herFullName || c.herName)}</span>
+    <span class="label footer__label">Made for ${esc(c.herFullName || c.herName).replace(/-/g, '\u2011')}</span>
     <span class="label footer__label">With love, ${esc(c.myFullName || c.myName)}</span>
   </footer>`;
 }
