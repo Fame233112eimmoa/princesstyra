@@ -387,7 +387,7 @@ And remember that on your 23rd birthday, there was someone who looked at your li
     title: 'Happy birthday, from me',
     intro: 'A few things I wanted to tell you on your birthday, face to face, even through a screen.',
     // When true, these unlock once she has watched every available friend video.
-    lockUntilFriendsWatched: true,
+    lockUntilFriendsWatched: false,
     lockedText: "Watch your loved ones' wishes first",
     videos: [
       { title: 'Happy birthday, my love', note: 'Start with this one.', video: 'assets/videos/from-me-1.mp4', poster: 'assets/videos/from-me-1.jpg' },
