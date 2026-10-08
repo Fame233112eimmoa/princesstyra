@@ -104,7 +104,7 @@ export function runPassword(config, { reduced }) {
 }
 
 // Her name appears letter by letter; tapping "Open" lifts the cover upward (and counts as the gesture music needs).
-export function runIntro(config, { reduced, onOpen }) {
+export function runIntro(config, { reduced, onShow, onOpen }) {
   const el = document.getElementById('intro');
   const letters = [...config.herName].map((ch) => `<span>${ch === ' ' ? '&nbsp;' : esc(ch)}</span>`).join('');
   el.innerHTML = `
@@ -123,10 +123,12 @@ export function runIntro(config, { reduced, onOpen }) {
 
   if (reduced) {
     gsap.from(el.querySelectorAll('.screen__inner > *'), { opacity: 0, duration: 0.8, stagger: 0.1 });
+    onShow?.();
   } else {
     gsap
       .timeline({ delay: 0.3 })
       .from(name, { opacity: 0, yPercent: 30, duration: 1.6, stagger: 0.12, ease: 'expo.out' })
+      .add(() => onShow?.(), 0.5)
       .from(rule, { scaleX: 0, duration: 1.2, ease: 'expo.out' }, '-=0.9')
       .from(rest, { opacity: 0, y: 14, duration: 1.2, stagger: 0.12, ease: 'power3.out' }, '-=0.9');
   }

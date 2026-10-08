@@ -261,7 +261,8 @@ p {
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 60;
+  /* Above the opening screen and page curtain, below the countdown, menus and players */
+  z-index: 205;
   pointer-events: none;
 }
 

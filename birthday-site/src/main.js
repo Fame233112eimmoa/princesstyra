@@ -44,11 +44,18 @@ const motion = initAnimations({ reduced });
 
   // The name intro plays once per visit, on the home page. Every other arrival lifts the curtain.
   const intro = document.getElementById('intro');
+  let introDrift;
   if (page === 'home' && session.get('bday-opened') !== '1') {
     nav.hideCurtain();
     await runIntro(config, {
       reduced,
+      onShow() {
+        petals.shower(40);
+        // Keep a gentle drift going for as long as she stays on the opening screen.
+        introDrift = setInterval(() => petals.shower(5), 1600);
+      },
       onOpen() {
+        clearInterval(introDrift);
         session.set('bday-opened', '1');
         music.startFromGesture();
         motion.playHero();
