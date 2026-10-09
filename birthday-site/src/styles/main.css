@@ -120,21 +120,6 @@ p {
   outline-offset: 3px;
 }
 
-.skip-link {
-  position: fixed;
-  top: var(--s-3);
-  left: var(--s-3);
-  z-index: 500;
-  padding: var(--s-2) var(--s-4);
-  background: var(--white);
-  border-radius: var(--r-sm);
-  transform: translateY(-200%);
-}
-
-.skip-link:focus {
-  transform: none;
-}
-
 .sr-only {
   position: absolute;
   width: 1px;
