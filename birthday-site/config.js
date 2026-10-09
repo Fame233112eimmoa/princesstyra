@@ -365,12 +365,11 @@ And remember that on your 23rd birthday, there was someone who looked at your li
     title: 'Happy birthday, from all of us',
     intro: 'A few people who love you recorded a birthday message. Tap a card to play it.',
     friends: [
-      { name: 'Your sister', relation: 'Family', video: 'assets/videos/sister.mp4', poster: 'assets/videos/sister.jpg' },
-      { name: 'Your brother', relation: 'Family', video: 'assets/videos/brother.mp4', poster: 'assets/videos/brother.jpg' },
+      { name: 'Baby sister Jo', relation: 'Family', video: 'assets/videos/sister.mp4', poster: 'assets/videos/sister.jpg' },
+      { name: 'Baby brother Lee', relation: 'Family', video: 'assets/videos/brother.mp4', poster: 'assets/videos/brother.jpg' },
       { name: 'Milly', relation: 'Friend', video: 'assets/videos/milly.mp4', poster: 'assets/videos/milly.jpg' },
-      // Add their names here
-      { name: 'A friend', relation: 'Friend', video: 'assets/videos/friend-1.mp4', poster: 'assets/videos/friend-1.jpg' },
-      { name: 'A friend', relation: 'Friend', video: 'assets/videos/friend-2.mp4', poster: 'assets/videos/friend-2.jpg' },
+      { name: 'Your best friend', relation: 'Bestie', video: 'assets/videos/friend-1.mp4', poster: 'assets/videos/friend-1.jpg' },
+      { name: 'Your twin', relation: 'Twin', video: 'assets/videos/friend-2.mp4', poster: 'assets/videos/friend-2.jpg' },
     ],
     // Photos shown under the videos. wide: true for landscape photos.
     photosTitle: 'Your favourite people',
@@ -378,7 +377,9 @@ And remember that on your 23rd birthday, there was someone who looked at your li
       { src: 'assets/loved/bestie.jpg', alt: 'Tyra and her best friend blowing kisses', caption: 'You and your bestie' },
       { src: 'assets/loved/together-1.jpg', alt: 'Tyra smiling with two friends, in black and white', caption: 'Together', wide: true },
       { src: 'assets/loved/mirror.jpg', alt: 'A mirror selfie with a friend', caption: 'Mirror moments' },
+      { src: 'assets/loved/loved-1426.jpg', alt: 'Tyra and a friend in matching Christmas pyjamas by the tree', caption: 'Christmas, together' },
       { src: 'assets/loved/together-2.jpg', alt: 'Tyra with two friends, in black and white', caption: 'Always together', wide: true },
+      { src: 'assets/loved/loved-1427.jpg', alt: 'Tyra and two friends posing by the river', caption: 'City days' },
     ],
   },
 

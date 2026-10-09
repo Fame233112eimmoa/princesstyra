@@ -12,8 +12,12 @@ const fileFor = (config, page) => config.chapters.find((c) => c.page === page)?.
 export function initWishes(config, { player, petals, mode }) {
   const grid = $(`[data-wishes="${mode}"]`);
   const note = $('[data-wish-note]', grid.closest('section'));
-  // "Your sister" reads as "From your sister" in the player.
-  const from = (name) => `From ${/^Your\s/.test(name) ? 'y' + name.slice(1) : name}`;
+  // "Your twin" reads as "From your twin" and "Baby sister Jo" as "From your baby sister Jo" in the player.
+  const from = (name) => {
+    if (/^Your\s/.test(name)) return `From y${name.slice(1)}`;
+    if (/^Baby\s/.test(name)) return `From your b${name.slice(1)}`;
+    return `From ${name}`;
+  };
   const friends = config.wishes.friends.map((f, i) => ({ ...f, id: `friend-${i}`, label: f.relation, heading: f.name, playerTitle: from(f.name) }));
   const mine = config.fromMe.videos.map((v, i) => ({ ...v, id: `me-${i}`, label: v.note, heading: v.title, playerTitle: v.title, initial: config.myName }));
   const entries = mode === 'me' ? mine : friends;

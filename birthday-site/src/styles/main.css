@@ -1849,7 +1849,7 @@ p {
   color: var(--ink-soft);
 }
 
-/* Desktop: one row of equal height (tall, wide, tall), the last wide photo centred below */
+/* Desktop: rows of equal height, each tall, wide, tall */
 @media (min-width: 760px) {
   .lo-photos__grid {
     grid-template-columns: repeat(4, 1fr);
@@ -1863,9 +1863,6 @@ p {
   }
   .lo-photo--wide .media {
     aspect-ratio: 3 / 2;
-  }
-  .lo-photo--wide:last-child {
-    grid-column: 2 / span 2;
   }
 }
 
