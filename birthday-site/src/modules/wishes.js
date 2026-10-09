@@ -16,6 +16,7 @@ export function initWishes(config, { player, petals, mode }) {
   const from = (name) => {
     if (/^Your\s/.test(name)) return `From y${name.slice(1)}`;
     if (/^Baby\s/.test(name)) return `From your b${name.slice(1)}`;
+    if (/^All\s/.test(name)) return `From a${name.slice(1)}`;
     return `From ${name}`;
   };
   const friends = config.wishes.friends.map((f, i) => ({ ...f, id: `friend-${i}`, label: f.relation, heading: f.name, playerTitle: from(f.name) }));
@@ -129,6 +130,22 @@ export function initWishes(config, { player, petals, mode }) {
       heading: entry.playerTitle,
       done: () => markWatched(entry.id),
     });
+  });
+
+  // Videos inside the photo collage: silent loop while visible, full player with sound on tap.
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  $$('[data-lo-video]').forEach((tile) => {
+    const clip = $('video', tile);
+    clip.src = tile.dataset.loVideo;
+    if (!reduced) {
+      new IntersectionObserver(([e]) => (e.isIntersecting ? clip.play().catch(() => {}) : clip.pause()), { threshold: 0.3 }).observe(tile);
+    }
+    const open = () => {
+      clip.pause();
+      player.play({ src: tile.dataset.loVideo, poster: tile.dataset.poster, heading: from(tile.dataset.title || 'All of us') });
+    };
+    tile.addEventListener('click', open);
+    tile.addEventListener('keydown', (e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), open()));
   });
 
   return { entries: () => $$('.wish', grid) };

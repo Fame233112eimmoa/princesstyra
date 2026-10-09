@@ -1849,6 +1849,45 @@ p {
   color: var(--ink-soft);
 }
 
+.lo-video {
+  cursor: pointer;
+}
+
+.lo-video video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lo-video__badge {
+  position: absolute;
+  left: var(--s-3);
+  bottom: var(--s-3);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--accent-700);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  box-shadow: var(--shadow-soft);
+}
+
+.lo-video__badge svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* On phones the clip gets the full width so it's easy to watch */
+.lo-photo--video {
+  grid-column: 1 / -1;
+}
+
 /* Desktop: rows of equal height, each tall, wide, tall */
 @media (min-width: 760px) {
   .lo-photos__grid {
@@ -1863,6 +1902,12 @@ p {
   }
   .lo-photo--wide .media {
     aspect-ratio: 3 / 2;
+  }
+  /* The clip sits centred under the photo rows, the width of one tall photo */
+  .lo-photo--video {
+    grid-column: 2 / span 2;
+    width: calc(50% - var(--s-4) / 2);
+    justify-self: center;
   }
 }
 
@@ -1928,7 +1973,7 @@ p {
 .scratch {
   position: relative;
   width: min(100%, 420px);
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 4 / 3.4;
   margin: 0 auto;
   border-radius: var(--r-lg);
   overflow: hidden;
@@ -1958,6 +2003,167 @@ p {
 .scratch__reveal p {
   color: var(--ink-soft);
   font-size: 0.95rem;
+}
+
+.ring {
+  width: clamp(116px, 38vw, 156px);
+  height: auto;
+  justify-self: center;
+  margin-bottom: calc(-1 * var(--s-2));
+  overflow: visible;
+}
+
+/* ---- "Will you be my promise?" animations, started when the card is scratched ---- */
+.ring-wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  justify-self: center;
+}
+
+.scratch.is-revealed .ring-wrap {
+  animation: ring-float 3.4s ease-in-out 1.4s infinite;
+}
+
+@keyframes ring-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* A thin halo pulsing outward behind the ring */
+.ring-wrap::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  width: 66%;
+  aspect-ratio: 1;
+  margin: -33% 0 0 -33%;
+  border-radius: 50%;
+  border: 1px solid var(--accent-300);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scratch.is-revealed .ring-wrap::before {
+  animation: halo 2.8s var(--ease) 1s infinite;
+}
+
+@keyframes halo {
+  from {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+/* Little hearts drifting up from the ring */
+.promise-hearts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.promise-hearts > span {
+  position: absolute;
+  left: var(--x);
+  bottom: 30%;
+  width: var(--size);
+  color: var(--petal-rose);
+  opacity: 0;
+}
+
+.promise-hearts svg {
+  width: 100%;
+  height: auto;
+}
+
+.scratch.is-revealed .promise-hearts > span {
+  animation: heart-rise 3.4s ease-out var(--d) infinite;
+}
+
+@keyframes heart-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6) rotate(0deg);
+  }
+  20% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-74px) scale(1) rotate(var(--r));
+  }
+}
+
+/* The question, word by word, with "promise?" underlined as it lands */
+.promise .pw {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0.04em 0.02em 0.16em;
+  margin: -0.04em -0.02em -0.16em;
+}
+
+.promise .pw > span {
+  display: inline-block;
+}
+
+.promise .pw--accent > span {
+  position: relative;
+  font-style: italic;
+}
+
+.promise .pw--accent > span::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0.1em;
+  bottom: 0.04em;
+  height: 1px;
+  background: var(--accent-500);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 1.2s var(--ease) 1.3s;
+}
+
+.scratch.is-revealed .promise .pw--accent > span::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .promise-hearts,
+  .ring-wrap::before {
+    display: none;
+  }
+}
+
+/* One slow glint on the diamond */
+.ring__glint {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: glint 2.8s var(--ease-in-out) infinite;
+}
+
+@keyframes glint {
+  0%,
+  60%,
+  100% {
+    opacity: 0;
+    transform: scale(0.4) rotate(0deg);
+  }
+  75% {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+  }
 }
 
 .scratch__canvas {

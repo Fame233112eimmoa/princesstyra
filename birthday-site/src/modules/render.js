@@ -268,6 +268,18 @@ function wishes(c) {
   </section>`;
 }
 
+// A short clip that loops silently among the photos; tapping it plays it with sound.
+function lovedVideo(p) {
+  return `
+            <div class="media lo-video" role="button" tabindex="0" data-lo-video="${esc(p.video)}" data-poster="${esc(p.poster || '')}" data-title="${esc(p.caption || '')}" aria-label="Play ${esc(p.caption || 'video')}, with sound">
+              <video muted loop playsinline preload="metadata" ${p.poster ? `poster="${esc(p.poster)}"` : ''} aria-hidden="true"></video>
+              <span class="lo-video__badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>
+                Tap for sound
+              </span>
+            </div>`;
+}
+
 function lovedPhotos(c) {
   const photos = c.wishes.photos || [];
   if (!photos.length) return '';
@@ -278,8 +290,8 @@ function lovedPhotos(c) {
           ${photos
             .map(
               (p) => `
-          <figure class="lo-photo ${p.wide ? 'lo-photo--wide' : ''}">
-            ${media(p.src, p.alt)}
+          <figure class="lo-photo ${p.wide ? 'lo-photo--wide' : ''} ${p.video ? 'lo-photo--video' : ''}">
+            ${p.video ? lovedVideo(p) : media(p.src, p.alt)}
             ${p.caption ? `<figcaption class="serif-italic">${esc(p.caption)}</figcaption>` : ''}
           </figure>`,
             )
@@ -329,6 +341,53 @@ function jar(c) {
   </section>`;
 }
 
+// A promise ring: a silver band with a faceted diamond and one soft glint.
+const RING = `
+  <svg class="ring" viewBox="0 0 120 112" role="img" aria-label="A ring">
+    <defs>
+      <linearGradient id="ring-band" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#ffffff" />
+        <stop offset="0.45" stop-color="#d9dfdb" />
+        <stop offset="0.7" stop-color="#9ea8a1" />
+        <stop offset="1" stop-color="#e9ece9" />
+      </linearGradient>
+      <linearGradient id="ring-gem" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ffffff" />
+        <stop offset="1" stop-color="#dfe8ec" />
+      </linearGradient>
+    </defs>
+    <ellipse cx="60" cy="74" rx="33" ry="29" fill="none" stroke="url(#ring-band)" stroke-width="7" />
+    <ellipse cx="60" cy="74" rx="33" ry="29" fill="none" stroke="rgba(38,48,42,.18)" stroke-width="0.8" />
+    <path d="M52 47 L55 41 M68 47 L65 41" stroke="#9ea8a1" stroke-width="2.4" stroke-linecap="round" />
+    <g class="ring__gem">
+      <polygon points="45,29 75,29 84,39 60,60 36,39" fill="url(#ring-gem)" stroke="var(--accent-700)" stroke-width="0.9" stroke-linejoin="round" />
+      <path d="M36 39 H84 M45 29 L52 39 L60 29 L68 39 L75 29 M52 39 L60 60 L68 39" fill="none" stroke="var(--accent-700)" stroke-width="0.7" stroke-linejoin="round" opacity=".7" />
+    </g>
+    <path class="ring__glint" d="M88 16 L90 22 L96 24 L90 26 L88 32 L86 26 L80 24 L86 22 Z" fill="#ffffff" stroke="var(--accent-500)" stroke-width="0.6" />
+  </svg>`;
+
+// Each word rises in on reveal; the last word ("promise?") is set in italics with a drawn underline.
+function promiseWords(title) {
+  const words = String(title).split(/\s+/);
+  return words
+    .map((w, i) => `<span class="pw${i === words.length - 1 ? ' pw--accent' : ''}" aria-hidden="true"><span>${esc(w)}</span></span>`)
+    .join(' ');
+}
+
+// Small hearts that drift up from the ring, each with its own position, size and timing.
+function promiseHearts() {
+  const hearts = [
+    [22, 0, 10, -14],
+    [70, 0.7, 13, 12],
+    [40, 1.4, 9, -6],
+    [84, 2.0, 10, 18],
+    [12, 2.5, 12, -18],
+  ];
+  return `<span class="promise-hearts" aria-hidden="true">${hearts
+    .map(([x, d, size, r]) => `<span style="--x:${x}%;--d:${d}s;--size:${size}px;--r:${r}deg">${heart}</span>`)
+    .join('')}</span>`;
+}
+
 function scratch(c) {
   return `
   <section class="section" id="surprise" data-tone="tint" aria-labelledby="surprise-title">
@@ -341,8 +400,9 @@ function scratch(c) {
       <div class="scratch-wrap" data-fade>
         <div class="scratch" data-scratch>
           <div class="scratch__reveal" aria-live="polite">
-            <h3>${esc(c.scratch.surpriseTitle)}</h3>
-            <p>${esc(c.scratch.surpriseText)}</p>
+            ${c.scratch.ring ? `<span class="ring-wrap">${RING}${promiseHearts()}</span>` : ''}
+            <h3 class="promise" aria-label="${esc(c.scratch.surpriseTitle)}">${promiseWords(c.scratch.surpriseTitle)}</h3>
+            ${c.scratch.surpriseText ? `<p>${esc(c.scratch.surpriseText)}</p>` : ''}
           </div>
           <canvas class="scratch__canvas" data-scratch-canvas data-lenis-prevent aria-hidden="true"></canvas>
         </div>

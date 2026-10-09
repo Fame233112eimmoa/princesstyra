@@ -102,7 +102,10 @@ export function initScratch({ petals }) {
     revealed = true;
     revealBtn.remove();
     gsap.to(canvas, { opacity: 0, duration: 0.9, ease: 'power2.out', onComplete: () => canvas.remove() });
-    gsap.from('.scratch__reveal > *', { y: 16, duration: 1.1, stagger: 0.12, ease: 'power3.out' });
+    card.classList.add('is-revealed');
+    gsap.from('.scratch__reveal .ring', { scale: 0.6, rotate: -12, duration: 1.4, ease: 'back.out(1.8)', transformOrigin: '50% 60%' });
+    gsap.from('.scratch__reveal .pw > span', { yPercent: 115, duration: 1.1, stagger: 0.1, ease: 'expo.out', delay: 0.35 });
+    gsap.from('.scratch__reveal p', { opacity: 0, y: 12, duration: 1, ease: 'power3.out', delay: 0.9 });
     petals.shower(22);
   }
 

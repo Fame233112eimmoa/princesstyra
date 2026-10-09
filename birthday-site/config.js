@@ -370,8 +370,9 @@ And remember that on your 23rd birthday, there was someone who looked at your li
       { name: 'Milly', relation: 'Friend', video: 'assets/videos/milly.mp4', poster: 'assets/videos/milly.jpg' },
       { name: 'Your best friend', relation: 'Bestie', video: 'assets/videos/friend-1.mp4', poster: 'assets/videos/friend-1.jpg' },
       { name: 'Your twin', relation: 'Twin', video: 'assets/videos/friend-2.mp4', poster: 'assets/videos/friend-2.jpg' },
+      { name: 'Your other twin', relation: 'Twin', video: 'assets/videos/twin-2.mp4', poster: 'assets/videos/twin-2.jpg' },
     ],
-    // Photos shown under the videos. wide: true for landscape photos.
+    // Photos (and short videos) shown under the video cards. wide: true for landscape photos.
     photosTitle: 'Your favourite people',
     photos: [
       { src: 'assets/loved/bestie.jpg', alt: 'Tyra and her best friend blowing kisses', caption: 'You and your bestie' },
@@ -380,6 +381,8 @@ And remember that on your 23rd birthday, there was someone who looked at your li
       { src: 'assets/loved/loved-1426.jpg', alt: 'Tyra and a friend in matching Christmas pyjamas by the tree', caption: 'Christmas, together' },
       { src: 'assets/loved/together-2.jpg', alt: 'Tyra with two friends, in black and white', caption: 'Always together', wide: true },
       { src: 'assets/loved/loved-1427.jpg', alt: 'Tyra and two friends posing by the river', caption: 'City days' },
+      // A video can sit among the photos too: it loops silently, and a tap plays it with sound.
+      { video: 'assets/videos/together.mp4', poster: 'assets/videos/together.jpg', alt: 'Tyra and friends cheering together', caption: 'All of us' },
     ],
   },
 
@@ -415,8 +418,10 @@ And remember that on your 23rd birthday, there was someone who looked at your li
   scratch: {
     title: 'Your birthday gift',
     intro: 'Scratch the card to unwrap it.',
-    surpriseTitle: 'Dinner is booked.',
-    surpriseText: 'Saturday, 8pm. Wear something you love. I will pick you up.',
+    surpriseTitle: 'Will you be my promise?',
+    surpriseText: '',
+    // A drawn ring above the words under the scratch card.
+    ring: true,
   },
 
   closing: {
