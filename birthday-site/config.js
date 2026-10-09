@@ -4,7 +4,7 @@
 const config = {
   herName: 'Tyra',
   herFullName: 'Tyra Maame Serwaa Akua Osei-Wusu',
-  myName: 'Joseph',
+  myName: 'Jo',
   myFullName: 'Joseph Agyei Boateng',
 
   // Her birthday this year, YYYY-MM-DD (born 15 October 2003).
