@@ -40,10 +40,10 @@ const config = {
   },
 
   hero: {
-    photo: 'assets/photos/25.jpg',
-    alt: 'Tyra smiling softly in warm light',
+    photo: 'assets/photos/tyra-green-1.jpg',
+    alt: 'Tyra in a green floral dress, blowing a kiss in a mirrored hallway',
     // Crop inside the arched frame: zoom in on a point of the photo (x/y in %, 0 = left/top).
-    focus: { x: 50, y: 30, zoom: 1.1 },
+    focus: { x: 50, y: 32, zoom: 1.15 },
     line: 'Today is entirely, unapologetically yours.',
   },
 
@@ -93,6 +93,8 @@ const config = {
   //   * text         one of the things you love, set very large (consecutive lines are grouped)
   //   + text         a wish, with a small leaf (consecutive lines are grouped)
   //   " text         a quote
+  //   @ file | caption          a photo, or a short clip (.mp4) that loops silently
+  //   @ file | caption | round  the same, in a circle
   //   **words**      inside any line: highlighted in sage italics
   //   ❤️             becomes a small sage heart
   letter: {
@@ -108,6 +110,7 @@ One ordinary day that neither of us knew would change so much for us.
 I didn't know that meeting you would eventually give me someone I would care about this deeply. I didn't know that the girl I met that day would become the person whose happiness would genuinely matter so much to me. I didn't know that your name would eventually become attached to so many of my favourite memories.
 ~ But here we are.
 ~ More than a year later.
+@ assets/photos/tyra-green-2.jpg | You, more than a year later.
 And this is already our second birthday together.
 ~ That thought alone makes me emotional.
 
@@ -151,6 +154,7 @@ There are so many things I love about you.
 * Your softness.
 * Your little ways.
 * Your smile.
+@ assets/videos/tyra-clip-2.mp4 | Your little ways.
 The way your presence can change my entire mood.
 And even the little things you probably think I don't notice.
 ! I notice.
@@ -316,6 +320,7 @@ And may this year become one of the chapters you'll look back on and say,
 " That was the year everything started changing for me.
 
 # All over again
+@ assets/videos/tyra-clip-1.mp4 | | round
 ! I love you, Tyra.
 - More than these words can carry.
 - More than one birthday message can explain.
@@ -371,6 +376,7 @@ And remember that on your 23rd birthday, there was someone who looked at your li
       { name: 'Your best friend', relation: 'Bestie', video: 'assets/videos/friend-1.mp4', poster: 'assets/videos/friend-1.jpg' },
       { name: 'Your twin', relation: 'Twin', video: 'assets/videos/friend-2.mp4', poster: 'assets/videos/friend-2.jpg' },
       { name: 'Your other twin', relation: 'Twin', video: 'assets/videos/twin-2.mp4', poster: 'assets/videos/twin-2.jpg' },
+      { name: 'A friend', relation: 'Friend', video: 'assets/videos/friend-3.mp4', poster: 'assets/videos/friend-3.jpg' },
     ],
     // Photos (and short videos) shown under the video cards. wide: true for landscape photos.
     photosTitle: 'Your favourite people',
@@ -381,6 +387,7 @@ And remember that on your 23rd birthday, there was someone who looked at your li
       { src: 'assets/loved/loved-1426.jpg', alt: 'Tyra and a friend in matching Christmas pyjamas by the tree', caption: 'Christmas, together' },
       { src: 'assets/loved/together-2.jpg', alt: 'Tyra with two friends, in black and white', caption: 'Always together', wide: true },
       { src: 'assets/loved/loved-1427.jpg', alt: 'Tyra and two friends posing by the river', caption: 'City days' },
+      { src: 'assets/loved/loved-1445.jpg', alt: 'Tyra and a friend smiling in the sunshine', caption: 'Sunny days' },
       // A video can sit among the photos too: it loops silently, and a tap plays it with sound.
       { video: 'assets/videos/together.mp4', poster: 'assets/videos/together.jpg', alt: 'Tyra and friends cheering together', caption: 'All of us' },
     ],

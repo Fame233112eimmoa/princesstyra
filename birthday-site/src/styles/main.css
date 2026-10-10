@@ -1037,6 +1037,49 @@ p {
   }
 }
 
+/* Photos and clips inside the letter */
+.ls-media {
+  margin: var(--s-3) 0;
+  display: grid;
+  gap: var(--s-2);
+  width: min(100%, 420px);
+}
+
+.ls-media .media {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-lg);
+}
+
+.ls-media .media img,
+.ls-media .media video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ls-media figcaption {
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+}
+
+.ls-media--round {
+  width: min(64%, 260px);
+}
+
+.ls-media--round .media {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--accent-300), 0 0 0 10px var(--paper), 0 0 0 11px var(--tint-200);
+  overflow: hidden;
+}
+
+/* The round clip has black rounded corners from the camera; zoom past them */
+.ls-media--round video {
+  transform: scale(1.18);
+}
+
 .ls-of {
   color: var(--ink-soft);
   opacity: 0.7;
@@ -1357,6 +1400,16 @@ p {
 }
 
 /* Thin offset outline, like the hero arch */
+.cake-video__frame.is-landscape {
+  width: min(calc(100vw - 2 * var(--gutter) - 12px), 760px);
+  aspect-ratio: 16 / 9;
+}
+
+.cake-video__frame.is-landscape .cake-video__video,
+.cake-video__frame.is-landscape::before {
+  border-radius: var(--r-lg);
+}
+
 .cake-video__frame::before {
   content: '';
   position: absolute;
@@ -1645,6 +1698,14 @@ p {
 .wishes__grid--me:has(> .wish:only-child) {
   max-width: 420px;
   margin: 0 auto;
+}
+
+.wishes__grid--me:has(> .wish--landscape:only-child) {
+  max-width: 760px;
+}
+
+.wish--feature.wish--landscape .wish__thumb {
+  aspect-ratio: 16 / 9;
 }
 
 @media (min-width: 760px) {

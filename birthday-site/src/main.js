@@ -11,7 +11,7 @@ import { initNav } from './modules/nav.js';
 import { initCake } from './modules/cake.js';
 import { initWishes } from './modules/wishes.js';
 import { createPlayer } from './modules/player.js';
-import { initReasons, initWishJar, initScratch, initEasterEgg } from './modules/features.js';
+import { initReasons, initWishJar, initScratch, initEasterEgg, initLoopClips } from './modules/features.js';
 import { session } from './modules/util.js';
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -34,6 +34,7 @@ initReasons();
 initWishJar({ reduced, petals });
 initScratch({ petals });
 initEasterEgg(config, { scroll, petals });
+initLoopClips({ reduced });
 
 const motion = initAnimations({ reduced });
 

@@ -139,6 +139,10 @@ function parseLetter(text) {
       else if (mark === '~') part.blocks.push({ type: 'line', text: body });
       else if (mark === '!') part.blocks.push({ type: 'big', text: body });
       else if (mark === '"') part.blocks.push({ type: 'quote', text: body });
+      else if (mark === '@') {
+        const [src, caption = '', shape = ''] = body.split('|').map((x) => x.trim());
+        part.blocks.push({ type: 'media', src, caption, round: shape === 'round' });
+      }
       else part.blocks.push({ type: 'p', text: line });
     });
   return parts;
@@ -151,6 +155,13 @@ function letterBlock(b) {
       return `<p class="ls-line" data-fade>${rich(b.text)}</p>`;
     case 'big':
       return `<p class="ls-big" data-brighten>${words(b.text)}</p>`;
+    case 'media': {
+      const clip = /\.(mp4|mov|m4v)$/i.test(b.src);
+      const inner = clip
+        ? `<div class="media"><video data-loop-clip muted loop playsinline preload="metadata" src="${esc(b.src)}" poster="${esc(b.src.replace(/\.\w+$/, '.jpg'))}" aria-hidden="true"></video></div>`
+        : `<div class="media"><img src="${esc(b.src)}" alt="${esc(b.caption || 'Tyra')}" loading="lazy" decoding="async" /></div>`;
+      return `<figure class="ls-media${b.round ? ' ls-media--round' : ''}" data-fade>${inner}${b.caption ? `<figcaption class="serif-italic">${rich(b.caption)}</figcaption>` : ''}</figure>`;
+    }
     case 'quote':
       return `<blockquote class="ls-quote" data-fade><p>${rich(b.text)}</p></blockquote>`;
     case 'list':

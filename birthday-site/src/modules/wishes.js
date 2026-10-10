@@ -16,7 +16,7 @@ export function initWishes(config, { player, petals, mode }) {
   const from = (name) => {
     if (/^Your\s/.test(name)) return `From y${name.slice(1)}`;
     if (/^Baby\s/.test(name)) return `From your b${name.slice(1)}`;
-    if (/^All\s/.test(name)) return `From a${name.slice(1)}`;
+    if (/^(All|A)\s/.test(name)) return `From a${name.slice(1)}`;
     return `From ${name}`;
   };
   const friends = config.wishes.friends.map((f, i) => ({ ...f, id: `friend-${i}`, label: f.relation, heading: f.name, playerTitle: from(f.name) }));
@@ -111,6 +111,9 @@ export function initWishes(config, { player, petals, mode }) {
     if (hasPoster) {
       thumb.insertAdjacentHTML('afterbegin', `<img src="${esc(e.poster)}" alt="" loading="lazy" decoding="async" />`);
       $('.wish__initial', thumb)?.remove();
+      const img = $('img', thumb);
+      const mark = () => el.classList.toggle('wish--landscape', img.naturalWidth > img.naturalHeight);
+      img.complete ? mark() : img.addEventListener('load', mark, { once: true });
     }
     if (hasVideo) thumb.insertAdjacentHTML('beforeend', `<span class="wish__play">${PLAY}</span>`);
   }

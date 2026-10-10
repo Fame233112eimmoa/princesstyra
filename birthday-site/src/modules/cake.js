@@ -171,8 +171,12 @@ export function initCake(config, { petals, music, scroll, reduced }) {
         vid.poster = after.poster;
         $('.cake-video__initial', frame)?.remove();
       }
-      if (hasVideo) vid.src = after.video;
-      else {
+      if (hasVideo) {
+        vid.src = after.video;
+        // Landscape footage gets a wide frame instead of the tall arch.
+        vid.addEventListener('loadedmetadata', () => frame.classList.toggle('is-landscape', vid.videoWidth > vid.videoHeight), { once: true });
+        vid.preload = 'metadata';
+      } else {
         playBtn.hidden = true;
         fullBtn.hidden = true;
         vState.textContent = 'Video coming soon';

@@ -215,3 +215,11 @@ export function initEasterEgg(config, { scroll, petals }) {
     if (typed === secret) open();
   });
 }
+
+/* ---------- Short clips that loop silently while on screen ---------- */
+export function initLoopClips({ reduced }) {
+  document.querySelectorAll('video[data-loop-clip]').forEach((v) => {
+    if (reduced) return;
+    new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { threshold: 0.25 }).observe(v);
+  });
+}
