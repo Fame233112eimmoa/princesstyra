@@ -377,6 +377,8 @@ And remember that on your 23rd birthday, there was someone who looked at your li
       { name: 'Your twin', relation: 'Twin', video: 'assets/videos/friend-2.mp4', poster: 'assets/videos/friend-2.jpg' },
       { name: 'Your other twin', relation: 'Twin', video: 'assets/videos/twin-2.mp4', poster: 'assets/videos/twin-2.jpg' },
       { name: 'A friend', relation: 'Friend', video: 'assets/videos/friend-3.mp4', poster: 'assets/videos/friend-3.jpg' },
+      // A voice note instead of a video: use audio: instead of video:
+      { name: 'Your little brother', relation: 'Voice note', audio: 'assets/music/voice-note.m4a' },
     ],
     // Photos (and short videos) shown under the video cards. wide: true for landscape photos.
     photosTitle: 'Your favourite people',

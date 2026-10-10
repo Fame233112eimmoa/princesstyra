@@ -29,7 +29,7 @@ const player = createPlayer({ scroll, music });
 
 if (document.querySelector('[data-cake]')) initCake(config, { petals, music, scroll, reduced });
 const wishGrid = document.querySelector('[data-wishes]');
-if (wishGrid) initWishes(config, { player, petals, mode: wishGrid.dataset.wishes });
+if (wishGrid) initWishes(config, { player, petals, music, mode: wishGrid.dataset.wishes });
 initReasons();
 initWishJar({ reduced, petals });
 initScratch({ petals });
