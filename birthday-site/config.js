@@ -16,7 +16,7 @@ const config = {
 
   // The countdown screen that keeps the site locked until midnight on her birthday.
   // Off while you test. Set to true when you're done; ?preview=1 still skips it for you.
-  countdown: false,
+  countdown: true,
 
   // Leave empty to disable. Not real security: it only keeps casual eyes out.
   password: '',
