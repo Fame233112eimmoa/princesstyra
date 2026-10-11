@@ -370,13 +370,15 @@ And remember that on your 23rd birthday, there was someone who looked at your li
     title: 'Happy birthday, from all of us',
     intro: 'A few people who love you recorded a birthday message. Tap a card to play it.',
     friends: [
+      { name: 'Laddy', relation: 'With love', video: 'assets/videos/laddy.mp4', poster: 'assets/videos/laddy.jpg' },
+      { name: 'Your mother-in-law', relation: 'Family', video: 'assets/videos/mother-in-law.mp4', poster: 'assets/videos/mother-in-law.jpg' },
       { name: 'Baby sister Jo', relation: 'Family', video: 'assets/videos/sister.mp4', poster: 'assets/videos/sister.jpg' },
       { name: 'Baby brother Lee', relation: 'Family', video: 'assets/videos/brother.mp4', poster: 'assets/videos/brother.jpg' },
       { name: 'Milly', relation: 'Friend', video: 'assets/videos/milly.mp4', poster: 'assets/videos/milly.jpg' },
-      { name: 'Your best friend', relation: 'Bestie', video: 'assets/videos/friend-1.mp4', poster: 'assets/videos/friend-1.jpg' },
+      { name: 'Joycelyn', relation: 'Your best friend', video: 'assets/videos/friend-1.mp4', poster: 'assets/videos/friend-1.jpg' },
       { name: 'Your twin', relation: 'Twin', video: 'assets/videos/friend-2.mp4', poster: 'assets/videos/friend-2.jpg' },
       { name: 'Your other twin', relation: 'Twin', video: 'assets/videos/twin-2.mp4', poster: 'assets/videos/twin-2.jpg' },
-      { name: 'A friend', relation: 'Friend', video: 'assets/videos/friend-3.mp4', poster: 'assets/videos/friend-3.jpg' },
+      { name: 'Nanny', relation: 'Friend', video: 'assets/videos/friend-3.mp4', poster: 'assets/videos/friend-3.jpg' },
       // A voice note instead of a video: use audio: instead of video:
       { name: 'Your little brother', relation: 'Voice note', audio: 'assets/music/voice-note.m4a' },
     ],
