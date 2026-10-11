@@ -15,7 +15,23 @@ export function initReasons() {
 }
 
 /* ---------- Wish jar ---------- */
-export function initWishJar({ reduced, petals }) {
+// Sends her wish to Formspree, which emails it to you. Quietly retries once; never blocks the animation.
+function sendWish(formId, text) {
+  if (!formId) return;
+  const body = JSON.stringify({ wish: text, _subject: 'A birthday wish from the wish jar', sentAt: new Date().toString() });
+  const post = () =>
+    fetch(`https://formspree.io/f/${encodeURIComponent(formId)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body,
+      keepalive: true,
+    });
+  post()
+    .then((r) => (r.ok ? r : post()))
+    .catch(() => setTimeout(() => post().catch(() => {}), 3000));
+}
+
+export function initWishJar(config, { reduced, petals }) {
   const form = $('[data-jar-form]');
   if (!form) return;
   const jar = $('[data-jar]');
@@ -29,6 +45,7 @@ export function initWishJar({ reduced, petals }) {
     if (!text) return;
     input.value = '';
     input.blur();
+    sendWish(config.wishJar?.formspreeId, text);
     count += 1;
     note.textContent = count === 1 ? 'Your wish is on its way.' : `${count} wishes sent.`;
 

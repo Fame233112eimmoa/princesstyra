@@ -31,7 +31,7 @@ if (document.querySelector('[data-cake]')) initCake(config, { petals, music, scr
 const wishGrid = document.querySelector('[data-wishes]');
 if (wishGrid) initWishes(config, { player, petals, music, mode: wishGrid.dataset.wishes });
 initReasons();
-initWishJar({ reduced, petals });
+initWishJar(config, { reduced, petals });
 initScratch({ petals });
 initEasterEgg(config, { scroll, petals });
 initLoopClips({ reduced });

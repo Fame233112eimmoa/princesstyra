@@ -427,6 +427,11 @@ And remember that on your 23rd birthday, there was someone who looked at your li
   wishJar: {
     title: 'The birthday wish jar',
     intro: 'Birthdays deserve more than one wish. Write another and let it go. Nothing is saved; it is just for you.',
+    // To receive her wishes by email: create a free form at formspree.io and paste its ID here
+    // (the part after formspree.io/f/). Leave '' to keep wishes private and unsent.
+    formspreeId: 'mljglogg',
+    // Shown instead of the intro above once formspreeId is set.
+    introWhenSent: 'Birthdays deserve more than one wish. Write another and let it go. I will keep every one safe.',
   },
 
   scratch: {

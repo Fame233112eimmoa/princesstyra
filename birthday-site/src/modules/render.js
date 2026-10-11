@@ -333,7 +333,7 @@ function jar(c) {
       <header class="section-head" style="justify-items:center;margin-bottom:0">
         <span class="label" data-fade>Let it go</span>
         <h2 class="title" id="jar-title" data-split>${esc(c.wishJar.title)}</h2>
-        <p class="lede" data-fade>${esc(c.wishJar.intro)}</p>
+        <p class="lede" data-fade>${esc(c.wishJar.formspreeId ? c.wishJar.introWhenSent : c.wishJar.intro)}</p>
       </header>
       <div class="jar__vessel" data-jar data-fade>
         <svg viewBox="0 0 140 180" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
