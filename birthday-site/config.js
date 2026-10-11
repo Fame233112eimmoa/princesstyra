@@ -373,7 +373,7 @@ And remember that on your 23rd birthday, there was someone who looked at your li
     title: 'Happy birthday, from all of us',
     intro: 'A few people who love you recorded a birthday message. Tap a card to play it.',
     friends: [
-      { name: 'Laddy', relation: 'With love', video: 'assets/videos/laddy.mp4', poster: 'assets/videos/laddy.jpg' },
+      { name: 'Lady', relation: 'With love', video: 'assets/videos/laddy.mp4', poster: 'assets/videos/laddy.jpg' },
       { name: 'Your mother-in-love', relation: 'Family', video: 'assets/videos/mother-in-law.mp4', poster: 'assets/videos/mother-in-law.jpg' },
       { name: 'Baby sister Jo', relation: 'Family', video: 'assets/videos/sister.mp4', poster: 'assets/videos/sister.jpg' },
       { name: 'Baby brother Lee', relation: 'Family', video: 'assets/videos/brother.mp4', poster: 'assets/videos/brother.jpg' },
