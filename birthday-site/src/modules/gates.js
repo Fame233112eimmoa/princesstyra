@@ -20,7 +20,7 @@ export function runLock(config, { reduced }) {
     <div class="screen__inner">
       <span class="label label--accent">Not quite yet</span>
       <h1 class="title">Something is waiting<br />for <em>${esc(config.herName)}</em></h1>
-      <p class="lede">It opens at midnight${config.timeZone === 'Europe/London' ? ' UK time' : ''}, ${esc(formatLongDate(config.birthday).replace(/^The /, 'the '))}.</p>
+      <p class="lede">It opens at midnight, ${esc(formatLongDate(config.birthday).replace(/^The /, 'the '))}.</p>
       <div class="countdown" role="timer" aria-live="off">
         ${['days', 'hours', 'minutes', 'seconds']
           .map((u) => `<div class="countdown__cell"><span class="countdown__num" data-unit="${u}">00</span><span class="label">${u}</span></div>`)
