@@ -10,6 +10,21 @@ export function parseDate(iso) {
   return new Date(y, (m || 1) - 1, d || 1, 0, 0, 0);
 }
 
+// The exact moment it is midnight on this date in a given time zone (e.g. 'Europe/London'),
+// whatever time zone the viewer's phone is set to. Handles summer time automatically.
+export function midnightIn(iso, timeZone) {
+  const [y, m, d] = String(iso).split('-').map(Number);
+  if (!timeZone) return parseDate(iso).getTime();
+  const guess = Date.UTC(y, m - 1, d);
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat('en-GB', { timeZone, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
+      .formatToParts(new Date(guess))
+      .map((p) => [p.type, Number(p.value)]),
+  );
+  const wall = Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second);
+  return guess - (wall - guess);
+}
+
 export function formatLongDate(iso) {
   const date = parseDate(iso);
   const day = date.getDate();

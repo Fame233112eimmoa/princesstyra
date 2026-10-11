@@ -11,6 +11,9 @@ const config = {
   birthday: '2026-10-15',
   age: 23,
 
+  // Midnight is counted in this time zone (she's in the UK), wherever the phone opening it is.
+  timeZone: 'Europe/London',
+
   // The countdown screen that keeps the site locked until midnight on her birthday.
   // Off while you test. Set to true when you're done; ?preview=1 still skips it for you.
   countdown: false,
@@ -371,7 +374,7 @@ And remember that on your 23rd birthday, there was someone who looked at your li
     intro: 'A few people who love you recorded a birthday message. Tap a card to play it.',
     friends: [
       { name: 'Laddy', relation: 'With love', video: 'assets/videos/laddy.mp4', poster: 'assets/videos/laddy.jpg' },
-      { name: 'Your mother-in-law', relation: 'Family', video: 'assets/videos/mother-in-law.mp4', poster: 'assets/videos/mother-in-law.jpg' },
+      { name: 'Your mother-in-love', relation: 'Family', video: 'assets/videos/mother-in-law.mp4', poster: 'assets/videos/mother-in-law.jpg' },
       { name: 'Baby sister Jo', relation: 'Family', video: 'assets/videos/sister.mp4', poster: 'assets/videos/sister.jpg' },
       { name: 'Baby brother Lee', relation: 'Family', video: 'assets/videos/brother.mp4', poster: 'assets/videos/brother.jpg' },
       { name: 'Milly', relation: 'Friend', video: 'assets/videos/milly.mp4', poster: 'assets/videos/milly.jpg' },
