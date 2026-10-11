@@ -544,7 +544,9 @@ export function renderPage(c, page) {
   document.title = page === 'home' ? c.meta.title : `${fmt(c, ch.title)} · ${c.meta.title}`;
   document.querySelector('meta[name="description"]')?.setAttribute('content', c.meta.description);
   const sections = PAGES[page](c);
-  if (page !== 'home') sections.push(nextChapter(c, page));
+  // Every chapter links to the next one; the last chapter is the end, so it has no link.
+  const isLast = c.chapters[c.chapters.length - 1].page === page;
+  if (page !== 'home' && !isLast) sections.push(nextChapter(c, page));
   sections.push(footer(c));
   document.getElementById('main').innerHTML = sections.join('');
   renderNav(c, page);
